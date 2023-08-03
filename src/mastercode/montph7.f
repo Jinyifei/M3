@@ -678,6 +678,7 @@ c
       integer*4 m,incream
 c      integer*4 convg_arr(mcnx,mcny,mcnz)
       real*8 convg_arr(maxnx,maxny,maxnz)
+      real*8 poparr(maxnx,maxny,maxnz,2)
       real*8 cov,cov0,tmp
       real*8 totion,totpix
       real*8 difma,dtlma,dhlma
@@ -693,7 +694,7 @@ c      integer*4 convg_arr(mcnx,mcny,mcnz)
       real*8 energ,wid
       real*8 pres0
       real*8 dv
-      real*8 poppre(mxion, mxelem)
+c      real*8 poppre(mxion, mxelem)
       character nmod*4
 c
       real*8 f5007,f4363,f3727,f6300,f6584,f6720
@@ -767,6 +768,9 @@ c
          dhni=dh_arr(ix,iy,iz)          
          tei=te_arr(ix,iy,iz)
          dei=de_arr(ix,iy,iz)
+c
+         poparr(ix,iy,iz,1) = pop(2,zmap(1))
+         poparr(ix,iy,iz,2) = pop(2,zmap(2))
 c
          recpdf=0.d0
          call calpdf(tei,dei,dhni,recpdf,rec0)  
@@ -900,8 +904,6 @@ c
 c
          intpt = 1
 c
-         totpix = totpix + 1.d0
-c
          call intvec (tphot, q1, q2, q3, q4)         
 c         
          q1field(ix,iy,iz)=q1
@@ -909,7 +911,7 @@ c
          q3field(ix,iy,iz)=q3
          q4field(ix,iy,iz)=q4
 c
-         call copypop (pop, poppre)
+c         call copypop (pop, poppre)
 c
          ipho=1
          iphom=0 ! ionising field changes
@@ -922,12 +924,20 @@ c
 c        --------------------
 c        convergence criteria
 c
-         call difhhe (pop, poppre, dhhe)
-         difde=dif(def,dei)/dhlma
          difte=dif(tef,tei)/dtlma
+         dhhe=abs(1-poparr(ix,iy,iz,1)/pop(2,zmap(1)))
+         dhhe=dmax1(abs(1-poparr(ix,iy,iz,2)/pop(2,zmap(2))),dhhe)
+         dhhe=dhhe/dhlma
+         difg=dmax1(dhhe,difte)
+c
+c         
+c         call difhhe (pop, poppre, dhhe)
+c         difde=dif(def,dei)/dhlma
+c         difte=dif(tef,tei)/dtlma
          dhhe=dhhe/difma
 c         difg=dmax1(dhhe,difde,difte)   
-         difg=dmax1(dhhe,difte)
+c         difg=dmax1(dhhe,difte)
+c
 c
 ccc         difte=dif(tef,tei)/dtlma
 c         difdh = dabs(poppre(2,zmap(1))-pop(2,zmap(1)))
@@ -936,6 +946,8 @@ ccc         difdh=dif(poppre(2,zmap(1)),pop(2,zmap(1)))/difma
 ccc         difg =dmax1(difdh,difte)
 c
 c         write (*,*) dhhe, difde, difte, difg, ix, iy, iz
+c
+         if((q1.gt.epsilon)) totpix = totpix + 1.d0
 c
          if ((difg.le.1).and.(pop(2,zmap(1)) .ge.fren)
      & .and.(q1.gt.epsilon)) cov=cov+1.d0
@@ -1033,6 +1045,10 @@ c
             call mcspec (luop1,dv,'SUMM')
 c            
 ccc         endif
+c
+c
+         poparr(ix,iy,iz,1) = pop(2,zmap(1))
+         poparr(ix,iy,iz,2) = pop(2,zmap(2))
 c
 c         
    30 continue 
