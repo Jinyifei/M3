@@ -1,7 +1,7 @@
 # M3_dev
 M3 Development 
 
-Jin et al. 2022a,b
+Jin et al. 2022ab
 
 This is specific to M3 developers.
 
