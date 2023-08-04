@@ -761,9 +761,7 @@ c
 c      
       do ix = 1, mcnx
       do iy = 1, mcny
-      do iz = 1, mcnz
-         
-c         write(*,*) ix, iy, iz
+      do iz = 1, mcnz         
 c
          dhni=dh_arr(ix,iy,iz)          
          tei=te_arr(ix,iy,iz)
@@ -786,11 +784,6 @@ c            jnu_arr(ix,iy,iz,inl) = 0.0d0
             call crosssections (inl, tauso, sigmt, dustsigmat)
             sigmt_arr(ix,iy,iz,inl)=sigmt*dhni
          enddo  
-c
-c      write (*,*) ix, iy, iz,         
-c     &            (cwx(ix)+cwx(ix+1))*0.5d0,
-c     &            (cwy(iy)+cwy(iy+1))*0.5d0,
-c     &            (cwz(iz)+cwz(iz+1))*0.5d0
 c
       enddo
       enddo
@@ -826,8 +819,7 @@ c
      &     ,te_arr(1,1,1),de_arr(1,1,1)
           enddo
           close (lulin)
-
-c          write (*,*) 'close', taskid
+c
       endif
 c
       if (m.eq.-1) then
@@ -846,16 +838,14 @@ c
      &     ,te_arr(2,2,3),te_arr(2,2,7)
           enddo
           close (lulin)
-
-c          write (*,*) 'close', taskid
-c          call mpi_barrier(MPI_COMM_WORLD, taskerr)
+c
           stop
       endif
 cccccccccccccccccccccccccccccc
 c
 c
 ccc      if (cov0.ge.0.7) then 
-c         open (lulin,file='./output/structure.out',status='unknown')
+c
          open (lulin,file=trim(outfile1),status='unknown')
          write (lulin,*) m, '  x, y, z, Te, dne, Q1, Q2, 
      &                      REC0, DLOS, ELOSS, EGAIN'     
@@ -870,18 +860,13 @@ c
       do iy = 1, mcny
       do 30 iz = 1, mcnz        
 c
-c
          xps = ix
          yps = iy
          zps = iz
 c
          dhni=dh_arr(ix,iy,iz)          
          tei=te_arr(ix,iy,iz)
-         dei=de_arr(ix,iy,iz) 
-c         
-c         if (dhni.le.epsilon) goto 30       
-ccc         if ((convg_arr(ix,iy,iz).le.1).or.(dhni.le.epsilon)) goto 30       
-c
+         dei=de_arr(ix,iy,iz)  
 c
          inttphot=0.d0
          inttphot2=0.d0
@@ -911,16 +896,13 @@ c
          q3field(ix,iy,iz)=q3
          q4field(ix,iy,iz)=q4
 c
-c         call copypop (pop, poppre)
-c
          ipho=1
          iphom=0 ! ionising field changes
-c         write (*,*) ix,iy,iz
-c         call mcteequi (tei, tef, def, dhni, nmod)     
+c   
          call teequi2 (tei, tef, def, dhni, 1.d33, nmod)
 c
          dhnf=dhni
-c
+c         
 c        --------------------
 c        convergence criteria
 c
@@ -929,38 +911,19 @@ c
          dhhe=dmax1(abs(1-poparr(ix,iy,iz,2)/pop(2,zmap(2))),dhhe)
          dhhe=dhhe/dhlma
          difg=dmax1(dhhe,difte)
-c
-c         
-c         call difhhe (pop, poppre, dhhe)
-c         difde=dif(def,dei)/dhlma
-c         difte=dif(tef,tei)/dtlma
          dhhe=dhhe/difma
-c         difg=dmax1(dhhe,difde,difte)   
-c         difg=dmax1(dhhe,difte)
-c
-c
-ccc         difte=dif(tef,tei)/dtlma
-c         difdh = dabs(poppre(2,zmap(1))-pop(2,zmap(1)))
-c         difdh = (difdh/(epsilon+pop(2,zmap(1))))/difma
-ccc         difdh=dif(poppre(2,zmap(1)),pop(2,zmap(1)))/difma   
-ccc         difg =dmax1(difdh,difte)
-c
-c         write (*,*) dhhe, difde, difte, difg, ix, iy, iz
 c
          if((q1.gt.epsilon)) totpix = totpix + 1.d0
 c
          if ((difg.le.1).and.(pop(2,zmap(1)) .ge.fren)
      & .and.(q1.gt.epsilon)) cov=cov+1.d0
-c         if ((dhhe.le.1).and.(pop(1,1).ge.fren)) cov=cov+1.d0
+c
          if ((pop(2,zmap(1)).ge.fren)
      & .and.(q1.gt.epsilon)) totion=totion+1.d0
          convg_arr(ix,iy,iz)=difg
-c
-cc         tef=(tef+tei)/2.d0
-cc         call equion (tef, def, dhnf)        
+c        
          te_arr(ix,iy,iz)=tef
          de_arr(ix,iy,iz)=def
-ccc         te_arr(ix,iy,iz)=7000
 c         
    25    continue 
          recpdf=0.d0
@@ -1009,7 +972,6 @@ c
                f6720=hsii(m)
             endif
 c
-c            open (lulin,file='./output/structure.out',
             open (lulin,file=trim(outfile1),
      &        status='OLD',access='APPEND') 
 c
@@ -1026,15 +988,10 @@ c
      &          .and.(q1field(ix,iy,iz).gt.epsilon))
      &        ,((pop(2,zmap(1)).ge.fren)
      &          .and.(q1field(ix,iy,iz).gt.epsilon))
-c     &        ,difte,difde,dhhe,difg     
-c     &        ,dlos,eloss,egain
      &        ,(pop(j,zmap(1)),j=1,maxion(zmap(1)))
      &        ,(pop(j,zmap(2)),j=1,maxion(zmap(2)))
      &        ,(pop(j,zmap(8)),j=1,9)
      &        ,(pop(j,zmap(16)),j=1,9)
-c     &        ,hloss,rloss,fslos,fmloss,xr3loss,xrlloss
-c     &        ,fflos,colos,f3loss,feloss,gcool
-c     &        ,pgain,cosgain,paheat,gheat,chgain,rngain  
 c
             close (lulin)     
 c
@@ -1064,7 +1021,6 @@ c
      &               ' ====================================',
      &               '=============================')
 c
-c           open (lulin,file='./output/all_spec.out',
            open (lulin,file=trim(outfile2),
      &          status='unknown') 
            write (lulin,35)
@@ -1074,8 +1030,6 @@ c
            close (lulin) 
 c
       endif
-c
-      write (*,*) 'm:',m,cov,inttphot,totpix,taskid,'a'
 c
       call mpi_barrier(MPI_COMM_WORLD, taskerr)  
       call mpi_allreduce(cov,tmp,1,
@@ -1088,7 +1042,6 @@ c
 c
       totion = tmp
 c
-      write (*,*) taskid, 'covergence', fren, cov, totion, totpix
       if (totion.gt.0) then
          cov = cov / totion      
       else
@@ -1098,7 +1051,6 @@ c
             cov = 0.d0
          endif
       endif
-      write (*,*) m, cov0, cov, abs(cov-cov0), npck
 c
       if (totion.eq.0) then 
          npck = npck * npckinc
@@ -1111,9 +1063,8 @@ c
      &   npck = npck * npckinc
 c
    40 m=m+1
-c
+c      
       if (taskid.eq.0) then
-         write (*,*) lulin
          if (m.eq.1)
      &   open (lulin,file='./output/status.out', 
      &        status='unknown')
