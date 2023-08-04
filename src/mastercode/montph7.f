@@ -87,6 +87,9 @@ c
       call popcha (model)
       model='Photo 6'
 c
+c     set random seed for the simulation
+      seed = time()
+c
 c     artificial support for low ionisation species
 c
       if (expertmode.gt.0) then
@@ -1086,7 +1089,7 @@ c
       logical   lgstr,lgdif,lgescape,lgabs
       logical   lgfin,lgrec,lgactive
       integer*4 ix,iy,iz,icont
-      integer*4 absEvent, seed0, seed
+      integer*4 absEvent
       integer*4 iphot,nphot,nphtlop,iloop
       integer*4 cwi(3),ci(3)
       integer*4 nup,nup0,nupcnt,m
@@ -1255,10 +1258,7 @@ c           direction
             epckarr(nupcnt,iphot,4) = hvec(1)      
             epckarr(nupcnt,iphot,5) = hvec(2)      
             epckarr(nupcnt,iphot,6) = hvec(3) 
-c           Tau
-            seed0=86432
-            seed=seed0
-            seed = time()                
+c           Tau              
             random=0.0d0
             random=ran2(seed)            
             epckarr(nupcnt,iphot,7) = -log(1.0d0-random)                                   
@@ -1776,7 +1776,7 @@ c                 Initialise photon Direction
 c                  
 c                 Initialise photon Frequency                
 c
-                  seed = time() 
+c                  seed = time() 
                   random=ran2(seed)  
                   if (random.lt.rec0_arr(ci(1),ci(2),ci(3))) then
                       lgescape = .true.
@@ -1789,9 +1789,6 @@ c
 c
 c
 c                 set random number for absorption event
-c                  seed0=86432
-c                  seed=seed0
-                  seed = time()                
                   random=0.0d0
                   random=ran2(seed)          
                   passprob = -log(1.0d0-random)
@@ -2060,17 +2057,16 @@ cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 c
       subroutine photdir (hvec)
 c
-      integer*4   i, seed0
+      integer*4   i
       real*8      random, ran2
       real*8      hvec(3) 
       real*8      w,u,v,t,ang
 c
-      seed0 = time() 
 c      
-      random = ran2(seed0)
+      random = ran2(seed)
       w = 2.*random - 1.
       t = sqrt(1.-w*w)
-      random = ran2(seed0)
+      random = ran2(seed)
       ang = 3.141592654*(2.*random-1.)
       u = t*cos(ang)
       v = t*sin(ang)
@@ -2092,7 +2088,6 @@ c
       include 'cblocks.inc'
 c
       logical   lgstr, lgdif
-      integer*4 seed0, seed
       integer*4 nup, i, numstar
       integer*4 ci(3)
 c
@@ -2106,9 +2101,7 @@ c
      &     ' ::::::::::::::::::::::::::::::::::::::::::::::::::::')     
 c
       i = 0
-   20 seed0 = 86432
-      seed0 = time()                   
-      random = ran2(seed0)
+   20 random = ran2(seed)
       i = i + 1
       if (i.ge.1000) then
          write (*,10) '1', i
