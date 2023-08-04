@@ -195,19 +195,6 @@ c
          luin=99
          open (unit=luin,file=grdfile(1:m),status='OLD') 
 c
-c         read (luin,*) mcnx
-c         do l=1,mcnx+1
-c            read (luin,*) cwx(l)
-c         enddo 
-c         read (luin,*) mcny
-c         do l=1,mcny+1
-c            read (luin,*) cwy(l)
-c         enddo               
-c         read (luin,*) mcnz
-c         do l=1,mcnz+1
-c            read (luin,*) cwz(l)
-c         enddo    
-c
          read (luin,*) mcnx0
          mcnx = mcnx0/nblk(1)
          l = 1
@@ -245,19 +232,7 @@ c
          enddo         
 c                 
       endif    
-c
-c
-ccc      do l=1,mcnx+1
-ccc         write (*,*) 'X: taskid=', taskid, cwx(l)
-ccc      enddo
-ccc      do l=1,mcny+1
-ccc         write (*,*) 'Y: taskid=', taskid, cwy(l)
-ccc      enddo
-ccc      do l=1,mcnz+1
-ccc         write (*,*) 'Z: taskid=', taskid, cwz(l)
-ccc      enddo
-ccc      stop
-c
+c      
 c
       write(*,95)
    95 format(//' Input Density Grid? (y/N) : ',$)
@@ -349,18 +324,11 @@ c
 c
 c     Possible to have no photons
 c
-c      qhlo = dlog(qht+epsilon)
-c      rechy = 2.6d-13
-c     reclo = dlog(rechy)
-c
       alphahb=2.585d-13
       alphaheb=1.533d-12
 c
-c
 c     Define freqency range of spectral sampling
 c     Default range is from 5-100 eV
-c
-ccc      nrange=8
 c
       mcnuin=5.0d0
       mcnuend=100.0d0
@@ -628,33 +596,8 @@ c
       dtlma=0.01d0
       dhlma=0.010d0
 c
-c
-c      cwx(1)=mcxst-0.125d18
-c      cwy(1)=mcyst
-c      cwz(1)=mczst
-c
-c      do i=2,15
-c         cwx(i) = cwx(i-1) + 0.125d18
-c      enddo
-c      do i=16,mcnx+1
-c         cwx(i) = cwx(i-1) + 0.25d17
-c      enddo  
-c      do i=2,mcny+1
-c         cwy(i) = cwy(i-1) + 0.25d18
-c      enddo      
-c      do i=2,mcnz+1
-c         cwz(i) = cwz(i-1) + 0.25d18
-c      enddo
-c
-      do i=1,mcnx+1
-         write (*,*) i, cwx(i), cwy(i), cwz(i)
-      enddo
 cc      stop
 c
-c
-cc      mcdy=cwy(2)-cwy(1)
-cc      mcdz=cwz(2)-cwz(1)
-cc      blum = .50d0*mcdz*mcdy
       call mciter (difma,dtlma,dhlma,blum,blum0)
 c
       end
@@ -734,21 +677,6 @@ c
       write (outfile3,'("./output/all_spec_int_",i0,".out")') taskid
 c
 c
-cccccc
-      te_arr=2000.d0  ! initial guess
-c      dh_arr=100.d0  ! initial guess
-      de_arr=100.d0  ! initial guess
-      jnu_arr=0.0d0  
-ccc      jnuw_arr=0.0d0  
-      recpdf_arr = 0.0d0 
-      rec0_arr = 0.0d0
-      convg_arr = 100.0d0  
-      q1field = 0.0d0
-      q2field = 0.0d0
-      q3field = 0.0d0
-      q4field = 0.0d0
-cccccc
-c 
       m=0
       incream=1
       cov=0.d0
@@ -763,6 +691,12 @@ c
       do iy = 1, mcny
       do iz = 1, mcnz         
 c
+cccccc
+         te_arr(ix,iy,iz)=2000.d0  ! initial guess
+         de_arr(ix,iy,iz)=0.0d0
+         convg_arr(ix,iy,iz) = 0.0d0
+cccccc
+c
          dhni=dh_arr(ix,iy,iz)          
          tei=te_arr(ix,iy,iz)
          dei=de_arr(ix,iy,iz)
@@ -776,7 +710,7 @@ c
          rec0_arr(ix,iy,iz)=rec0
 c         
          do inl=1,infph-1
-c            jnu_arr(ix,iy,iz,inl) = 0.0d0
+            jnu_arr(ix,iy,iz,inl) = 0.0d0
             recpdf_arr(ix,iy,iz,inl)=recpdf(inl) 
             tauso=0.d0
             sigmt=0.d0
@@ -885,11 +819,15 @@ c
 c
          if (inttphot.le.epsilon) goto 25                
 c
+c         write (*,*) 'call equion, taskid', taskid
          call equion (tei, dei, dhni)
+c         write (*,*) 'call equion end, taskid', taskid
 c
          intpt = 1
 c
+c         write (*,*) 'call intvec, taskid', taskid
          call intvec (tphot, q1, q2, q3, q4)         
+c         write (*,*) 'call intvec end, taskid', taskid
 c         
          q1field(ix,iy,iz)=q1
          q2field(ix,iy,iz)=q2
@@ -898,8 +836,11 @@ c
 c
          ipho=1
          iphom=0 ! ionising field changes
+         nmod='EQUI'         
 c   
+c         write (*,*) 'call teequi2, taskid', taskid, nmod
          call teequi2 (tei, tef, def, dhni, 1.d33, nmod)
+c         write (*,*) 'call teequi2, taskid', taskid
 c
          dhnf=dhni
 c         
@@ -978,11 +919,15 @@ c
             write (lulin,*) (cwx(ix)+cwx(ix+1))*0.5d0,
      &                   (cwy(iy)+cwy(iy+1))*0.5d0,
      &                   (cwz(iz)+cwz(iz+1))*0.5d0,
-     &                   te_arr(ix,iy,iz),de_arr(ix,iy,iz),
-     &                   q1field(ix,iy,iz),q2field(ix,iy,iz),
-     &                   q3field(ix,iy,iz),q4field(ix,iy,iz),
+     &                   te_arr(ix,iy,iz),
+     &                   de_arr(ix,iy,iz),
+     &                   q1field(ix,iy,iz),
+     &                   q2field(ix,iy,iz),
+     &                   q3field(ix,iy,iz),
+     &                   q4field(ix,iy,iz),
      &                   inttphot,
-     &                   rec0_arr(ix,iy,iz),dh_arr(ix,iy,iz)
+     &                   rec0_arr(ix,iy,iz),
+     &                   dh_arr(ix,iy,iz)
      &        ,hbeta,f5007,f4363,f3727,f6300,f6584,f6720
      &        ,((difg.le.1).and.(pop(2,zmap(1)).ge.fren)
      &          .and.(q1field(ix,iy,iz).gt.epsilon))
@@ -1042,6 +987,12 @@ c
 c
       totion = tmp
 c
+      call mpi_allreduce(totpix,tmp,1,
+     &     MPI_REAL8,MPI_SUM,MPI_COMM_WORLD, taskerr) 
+c
+      totpix = tmp
+c
+c
       if (totion.gt.0) then
          cov = cov / totion      
       else
@@ -1067,12 +1018,33 @@ c
       if (taskid.eq.0) then
          if (m.eq.1)
      &   open (lulin,file='./output/status.out', 
-     &        status='unknown')
+     &        status='unknown')   
+c
          if (m.gt.1)
      &   open (lulin,file='./output/status.out',
      &        status='OLD',access='APPEND')
          write (lulin,*) m, cov, totion, totpix, npck
          close(lulin) 
+c
+c
+         if (m.eq.1)
+     &   open (lulin,file='./output/grid.out', 
+     &        status='unknown')
+         write (lulin,*) mcnx
+         do i=1,mcnx+1
+            write (lulin,*) i, cwx(i)
+         enddo  
+         write (lulin,*) mcny
+         do i=1,mcny+1
+            write (lulin,*) i, cwy(i)
+         enddo 
+         write (lulin,*) mcnz
+         do i=1,mcnz+1
+            write (lulin,*) i, cwz(i)
+         enddo 
+         close(lulin)
+c
+c
       endif        
 c
       if (m.le.20) then
