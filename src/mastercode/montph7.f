@@ -672,9 +672,15 @@ c
      &     '   MCITER SUBROUTINE IS RUN'/
      &     ' ****************************************************')
 c
-      write (outfile1,'("./output/structure_",i0,".out")') taskid
-      write (outfile2,'("./output/all_spec_",i0,".out")') taskid
-      write (outfile3,'("./output/all_spec_int_",i0,".out")') taskid
+      outfile1 = "./output/structure.out"
+      outfile2 = "./output/all_spec.out"
+      outfile3 = "./output/all_spec_int.out"
+c         
+      if (numtasks.gt.1) then
+         write (outfile1,'("./output/structure_",i0,".out")') taskid
+         write (outfile2,'("./output/all_spec_",i0,".out")') taskid
+         write (outfile3,'("./output/all_spec_int_",i0,".out")') taskid
+      endif
 c
 c
       m=0
@@ -937,6 +943,8 @@ c
      &        ,(pop(j,zmap(2)),j=1,maxion(zmap(2)))
      &        ,(pop(j,zmap(8)),j=1,9)
      &        ,(pop(j,zmap(16)),j=1,9)
+     &        ,poparr(ix,iy,iz,1)
+     &        ,poparr(ix,iy,iz,2)
 c
             close (lulin)     
 c
