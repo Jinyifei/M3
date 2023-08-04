@@ -213,7 +213,7 @@ c      real*8 zarr(maxnx,maxny,maxnz)
 c
       real*8 strpos(3)    
 c
-      integer*4 nrange,npck,npckinc     
+      integer*4 nrange,npck,npckinc,seed     
       integer*4 taskerr,taskid,numtasks
       integer*4 mcnx,mcny,mcnz
       integer*4 xps, yps, zps
@@ -1797,7 +1797,7 @@ c
 c
       common /mcvar2/  sigmt_arr,rec0_arr,recpdf_arr,strpdf_arr
      &                ,jnu_arr,jnuw_arr,volfilar,resflux,resflux2 
-     &                ,cwx,cwy,cwz
+     &                ,cwx,cwy,cwz,seed
 c
       common /mcvar3/  dh_arr,de_arr,te_arr 
 c
