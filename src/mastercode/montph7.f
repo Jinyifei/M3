@@ -1583,7 +1583,7 @@ c              Calculate local Tau
                sigmt=sigmt_arr(ci(1),ci(2),ci(3),nup)       
                if (sigmt.gt.0)
      &         tauloc=sigmt*ds
-ca
+c
 c               if (sigmt.gt.0)
 c     &         write (*,*) iphot,nup,passprob,tauloc,taskid,
 c     &         m
