@@ -1140,7 +1140,7 @@ cccccccccccccc
 c
 c
       lgdebug = .false.
-      lgsilence = .false.
+      lgsilence = .true.
 c
 c         
       if (m.eq.1) write (*,10) 
@@ -1154,9 +1154,6 @@ c     For radiation bounded case, there is no boundary limit
      &    diend=dsqrt((cwx(mcnx+1)-cwx(1))**2.0d0
      &               +(cwy(mcny+1)-cwy(1))**2.0d0
      &               +(cwz(mcnz+1)-cwz(1))**2.0d0)
-c
-c
-      write (*,*) diend
 c      
 cccccccccccccc    
       strpos(1) = 0.0d0
@@ -1182,7 +1179,12 @@ c
          nphtlop = 1
       endif
 c
-      write (*,*) nphot, npck0, npck
+      if (.not.lgsilence) then
+         if (taskid.eq.0) then
+            write (*,*) 'Nphot, Npack0, Npack'
+            write (*,*) nphot, npck0, npck            
+         endif
+      endif
 c
 ccccccccccccc
 c
@@ -1203,12 +1205,17 @@ c
      &     MPI_REAL8,MPI_MIN,MPI_COMM_WORLD, taskerr)       
 c
       call mpi_barrier(MPI_COMM_WORLD, taskerr)
-      write (*,*) taskid,'max',  cwmax(1), cwmax(2), cwmax(3)
-     &               , cwx(mcnx+1), cwy(mcny+1), cwz(mcnz+1)
-      write (*,*) taskid,'min',  cwmin(1), cwmin(2), cwmin(3)
-     &               , cwx(1), cwy(1), cwz(1)
-      call mpi_barrier(MPI_COMM_WORLD, taskerr)
-
+c
+      if (.not.lgsilence) then
+         write (*,*) taskid,'max',
+     &             cwmax(1), cwmax(2), cwmax(3),
+     &             cwx(mcnx+1), cwy(mcny+1), cwz(mcnz+1)
+         write (*,*) taskid,'min',  
+     &             cwmin(1), cwmin(2), cwmin(3),
+     &             cwx(1), cwy(1), cwz(1)
+         call mpi_barrier(MPI_COMM_WORLD, taskerr)
+      endif 
+c
 ccccccccccccc
 c
 c
@@ -1230,7 +1237,8 @@ c
          endif
       endif
 c
-      write (*,*) 'round:',irg,'/',nphtlop
+      if (taskid.eq.0)
+     & write (*,*) 'round:',irg,'/',nphtlop
 c
 ccccccccccccc
 c
@@ -1322,6 +1330,18 @@ c                call mpi_barrier(MPI_COMM_WORLD, taskerr)
                stop
             endif
 c
+c
+            lgstr = flgarr(nupcnt,iphot,1)  
+            lgdif = flgarr(nupcnt,iphot,2)  
+            lgfin = flgarr(nupcnt,iphot,3) 
+            lgrec = flgarr(nupcnt,iphot,4)       
+c
+            absEvent = absarr(nupcnt,iphot)
+            passprob = epckarr(nupcnt,iphot,7)  
+c
+            if (lgfin) goto 50   
+c
+c            
 c            wid=photev(nup+1)-photev(nup)
 c            mcde=soupho(nup)*wid*evplk*invnph*blum*invblum
             wid=photev(nupcnt+1)-photev(nupcnt)
@@ -1380,15 +1400,7 @@ c               lgescape = .true.
 c
             if (.not.lgactive) goto 50              
 c
-            lgstr = flgarr(nupcnt,iphot,1)  
-            lgdif = flgarr(nupcnt,iphot,2)  
-            lgfin = flgarr(nupcnt,iphot,3) 
-            lgrec = flgarr(nupcnt,iphot,4)       
-c
-            absEvent = absarr(nupcnt,iphot)
-            passprob = epckarr(nupcnt,iphot,7)  
-c
-            if (lgfin) goto 50             
+c          
 c
             lgescape = .false.            
 c
@@ -1925,10 +1937,15 @@ c
 c
       call mpi_barrier(MPI_COMM_WORLD, taskerr)
 c
-      nmpi = nmpi + 1
+      if (taskid.eq.0) then
+         write (*,*) 'Nfin,  Nphot @ nmpi:', nmpi
+         write (*,*) nfinevnt, (infph-1)*nphot
+      endif
 c
       if (.not.lgsilence)
      &write (*,*) 'Taskid:',taskid, ' Leave RT, nmpi=', nmpi
+c
+      nmpi = nmpi + 1
 c
       if ((nfinevnt.lt.(infph-1)*nphot).and.(nmpi.le.safelmt)) 
      & goto 20
