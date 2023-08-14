@@ -663,6 +663,8 @@ c
       real*8 rec0    
       real*8 rtmp, nsum1, nsum2    
 c
+      real*8    starttime, endtime
+c
       real*8 feldens,fpressu,dif
 c
       integer*4 lulin,luop1,luop2
@@ -671,6 +673,8 @@ c
 c
       dif(a,b)=dabs(dlog10(a+epsilon)-dlog10(b+epsilon))
 c
+c
+      call cpu_time(starttime)
 c
       dton=1.d33
       nmod='EQUI'
@@ -1032,7 +1036,9 @@ c
      &   npck = npck * npckinc
 c
    40 m=m+1
-c      
+c
+      call cpu_time(endtime)      
+c
       if (taskid.eq.0) then
          if (m.eq.1)
      &   open (lulin,file='./output/status.out', 
@@ -1041,7 +1047,8 @@ c
          if (m.gt.1)
      &   open (lulin,file='./output/status.out',
      &        status='OLD',access='APPEND')
-         write (lulin,*) m, cov, totion, totpix, npck
+         write (lulin,*) m, cov, totion, totpix, npck, 
+     &                   endtime - starttime   
          close(lulin) 
 c
 c
