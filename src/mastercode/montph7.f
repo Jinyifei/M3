@@ -25,6 +25,13 @@ cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 c
       subroutine montph7 ()
 c
+cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+c
+c     MONTe-carlo PH7 Version0.0
+c
+cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc      
+c
+c
       include 'cblocks.inc'
       include 'mpif.h'
 c
