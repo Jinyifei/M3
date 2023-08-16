@@ -44,6 +44,7 @@ c
       real*8 blum0,dflum0,dflum(8)
       real*8 mcdx,mcdy,mcdz
       real*8 dhntmp, tmp
+      real*8 velx, vely, velz
 c      real*8 fluxes(mxmonlines)
 c
       integer*4 lenv      
@@ -61,7 +62,7 @@ c      character=jtb*4
       character caract*4,ilgg*4
       character banfil*32
       character*512 fnam
-      character*512 grdfile,denfile
+      character*512 grdfile,denfile,velfile
       character jren*4,jrnu*4
 c
       logical iexi      
@@ -243,6 +244,70 @@ c
 c                 
       endif    
 c      
+c
+      write(*,92)
+   92 format(//' Input Velocity Field? (y/N) : ',$)
+c
+      if (taskid.eq.0) read (*,20) ilgg
+      call mpi_barrier(MPI_COMM_WORLD, taskerr)
+      call mpi_bcast(ilgg,4,MPI_CHARACTER,0,MPI_COMM_WORLD,taskerr)
+c
+      ilgg=ilgg(1:1)
+c
+      if (ilgg.eq.'Y'.or.ilgg.eq.'y') then
+c
+   93 write(*,94)
+   94 format(/' Input Velocity File (Vx, Vy, Vz) : ',$)
+      if (taskid.eq.0) read (*,20) fnam
+      call mpi_barrier(MPI_COMM_WORLD, taskerr)
+      call mpi_bcast(fnam,512,MPI_CHARACTER,0,MPI_COMM_WORLD,taskerr)
+
+      m=lenv(fnam)
+      velfile=fnam(1:m)
+c
+      iexi=.false.
+      inquire (file=velfile(1:m),exist=iexi)  
+c
+      if (iexi.eqv..false.) then
+c
+         write (*,*) velfile(1:m),' NOT FOUND.'
+         stop
+c
+      else 
+c
+         write (*,*) 'FOUND: ',velfile(1:m)
+         luin=99
+         open (unit=luin,file=velfile(1:m),status='OLD') 
+c
+         do i=1,mcnx0
+         do j=1,mcny0
+         do k=1,mcnz0
+            read (luin,*) velx, vely, velz
+            if ((i.ge.(blockid(1)*mcnx+1))
+     &     .and.(i.le.((blockid(1)+1)*mcnx))
+     &     .and.(j.ge.(blockid(2)*mcny+1))
+     &     .and.(j.le.((blockid(2)+1)*mcny))
+     &     .and.(k.ge.(blockid(3)*mcnz+1))
+     &     .and.(k.le.((blockid(3)+1)*mcnz))) then
+c              
+            ix = i-blockid(1)*mcnx
+            iy = j-blockid(2)*mcny
+            iz = k-blockid(3)*mcnz
+c            
+            vel_arr(ix,iy,iz,1) = velx
+            vel_arr(ix,iy,iz,2) = vely
+            vel_arr(ix,iy,iz,3) = velz
+c
+            endif            
+c            
+         enddo 
+         enddo 
+         enddo 
+c
+      endif
+c
+      endif
+c
 c
       write(*,95)
    95 format(//' Input Density Grid? (y/N) : ',$)
@@ -1106,7 +1171,7 @@ c
       integer*4 absEvent
       integer*4 iphot,nphot,nphtlop,iloop
       integer*4 cwi(3),ci(3)
-      integer*4 nup,nup0,nupcnt,m
+      integer*4 nup,nupcnt,nupdp,m
       integer*4 xp, yp, zp
       integer*4 numstar,irg
       integer*4 incream,npck0
@@ -1123,8 +1188,7 @@ c
       real*8    cw
       real*8    rx,ry,rz,rx0,ry0,rz0
 c
-      real*8    ds,dsx,dsy,dsz
-      real*8    dv,vllmt,volfil
+      real*8    ds,dsx,dsy,dsz,dv
 c
       real*8    a,b,c
       real*8    posorg(3)
@@ -1142,6 +1206,8 @@ c
       integer*4 absarr0(mxinfph,looplmt)
       logical   flgarr0(mxinfph,looplmt,4)
       real*8    cwmax0(3),cwmin0(3)
+c
+      real*8    dvel
 c
       integer*4 nfinevnt,nfinevnt0,ncnt,nmpi
       integer*4 nphot0
@@ -1287,7 +1353,8 @@ c           Tau
 c           frequency
             nuparr(nupcnt,iphot) = nupcnt
 c           absevent
-            absarr(nupcnt,iphot) = 0            
+            absarr(nupcnt,iphot) = 0     
+c                   
          enddo
       enddo
 c
@@ -1603,10 +1670,19 @@ c              Whether photon out of Rout (diend)
                endif     
 c          
 c
+               dvel = hvec(1) * vel_arr(ci(1),ci(2),ci(3),1)
+     &              + hvec(2) * vel_arr(ci(1),ci(2),ci(3),2)
+     &              + hvec(3) * vel_arr(ci(1),ci(2),ci(3),3)
+c
+               dvel = -1.0d0 * dvel
+c
+               nupdp = 0.0d0
+               call doppeff(nup,dvel,nupdp)
+c
 c              Calculate local Tau
                sigmt=0.d0 
                tauloc=0.d0      
-               sigmt=sigmt_arr(ci(1),ci(2),ci(3),nup)       
+               sigmt=sigmt_arr(ci(1),ci(2),ci(3),nupdp)       
                if (sigmt.gt.0)
      &         tauloc=sigmt*ds
 c
@@ -1622,12 +1698,12 @@ c              Whether the photon is absorbed?
                   rvec(2)=rvec(2)+ds*hvec(2)
                   rvec(3)=rvec(3)+ds*hvec(3)
 c                
-                  jnu_arr(ci(1),ci(2),ci(3),nup)
-     &           =jnu_arr(ci(1),ci(2),ci(3),nup)+ds*mcde/dv
+                  jnu_arr(ci(1),ci(2),ci(3),nupdp)
+     &           =jnu_arr(ci(1),ci(2),ci(3),nupdp)+ds*mcde/dv
 c
 c
 c
-                  if (isnan(jnu_arr(ci(1),ci(2),ci(3),nup)))
+                  if (isnan(jnu_arr(ci(1),ci(2),ci(3),nupdp)))
      &            then
                      write (*,*) 'abs', ds,ci(1),ci(2),ci(3)
      &                           ,ds*mcde/dv,dv,taskid
@@ -1690,13 +1766,13 @@ ccc                   if (lgdif) jnuw_arr(1,nup)=jnuw_arr(1,nup)+ds*mcde/dv
 ccc                  endif  
 c  
 c                  write (*,*) ci                
-                     jnu_arr(ci(1),ci(2),ci(3),nup)
-     &                =jnu_arr(ci(1),ci(2),ci(3),nup)+ds*mcde/dv        
+                     jnu_arr(ci(1),ci(2),ci(3),nupdp)
+     &                =jnu_arr(ci(1),ci(2),ci(3),nupdp)+ds*mcde/dv        
 c
                   endif
 c
 c
-                  if (isnan(jnu_arr(ci(1),ci(2),ci(3),nup)))
+                  if (isnan(jnu_arr(ci(1),ci(2),ci(3),nupdp)))
      &            then
                      write (*,*) 'noabs', ds,ci(1),ci(2),ci(3)
      &                           ,ds*mcde/dv,dv,taskid
@@ -1800,6 +1876,11 @@ c                 Initialise photon Direction
                   hvec(3)=0.0d0                  
                   call photdir (hvec)
 c                  
+c                 Projected velocity for Doppler effect
+                  dvel = vel_arr(xp,yp,zp,1)*hvec(1)
+     &                 + vel_arr(xp,yp,zp,2)*hvec(2)
+     &                 + vel_arr(xp,yp,zp,3)*hvec(3)                       
+c
 c                 Initialise photon Frequency                
 c
 c                  seed = time() 
@@ -1812,6 +1893,10 @@ c                  seed = time()
                   endif                     
                   call frqgen (nup,mcnuin,mcnuend,
      &                         ci,lgstr,lgdif,numstar)
+c                   
+                  nupdp = 0.0d0
+                  call doppeff(nup,dvel,nupdp)
+                  nup = nupdp
 c
 c
 c                 set random number for absorption event
@@ -2110,6 +2195,42 @@ c
 c
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 c
+c     Doppler Effect
+c
+cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc 
+c
+      subroutine doppeff (nup,dvel,nupdp)
+c
+      include 'cblocks.inc'
+c
+      integer*4 nup, nupdp, isg
+c
+      real*8    dvel, cphotev0
+c 
+c      
+   10 format(//
+     &     ' ::::::::::::::::::::::::::::::::::::::::::::::::::::'/
+     &     '  Problem with Doppler Effect'/
+     &     ' ::::::::::::::::::::::::::::::::::::::::::::::::::::') 
+c
+      cphotev0 = cphotev(nup) * dsqrt((cls+dvel)/(cls-dvel))
+      isg = 1
+      if (dvel.lt.0) isg = -1
+c
+      nupdp = nup - isg
+   20 nupdp = nupdp + isg
+      if ((photev(nupdp)-cphotev0)*(photev(nupdp+1)-cphotev0).gt.0) 
+     & goto 20
+c   
+
+c
+      return 
+      end
+c
+c
+c
+cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+c
 c     Frequency Generator
 c
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc 
@@ -2161,7 +2282,6 @@ c     stellar photon
 c     diffuse photon      
       if ((.not.lgstr).and.lgdif
      &   .and.(random.ge.recpdf_arr(ci(1),ci(2),ci(3),nup))) goto 30     
-c
 c
       return
       end     

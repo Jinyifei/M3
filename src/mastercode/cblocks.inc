@@ -206,7 +206,7 @@ c      real*8 zarr(maxnx,maxny,maxnz)
       real*8 dh_arr(maxnx,maxny,maxnz)
       real*8 de_arr(maxnx,maxny,maxnz)
       real*8 te_arr(maxnx,maxny,maxnz) 
-      real*8 volfilar(maxnx,maxny,maxnz)      
+      real*8 vel_arr(maxnx,maxny,maxnz,3)      
       real*8 cwx(maxnx+1)      
       real*8 cwy(maxny+1)      
       real*8 cwz(maxnz+1)      
@@ -1796,7 +1796,7 @@ c
      &                ,xps,yps,zps,intpt
 c
       common /mcvar2/  sigmt_arr,rec0_arr,recpdf_arr,strpdf_arr
-     &                ,jnu_arr,jnuw_arr,volfilar,resflux,resflux2 
+     &                ,jnu_arr,jnuw_arr,vel_arr,resflux,resflux2 
      &                ,cwx,cwy,cwz,seed
 c
       common /mcvar3/  dh_arr,de_arr,te_arr 
