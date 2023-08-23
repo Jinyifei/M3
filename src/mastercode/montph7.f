@@ -254,6 +254,8 @@ c
 c
       ilgg=ilgg(1:1)
 c
+      vel_arr = 0.0d0
+c
       if (ilgg.eq.'Y'.or.ilgg.eq.'y') then
 c
    93 write(*,94)
@@ -309,8 +311,20 @@ c
       endif
 c
 c
-      write(*,95)
-   95 format(//' Input Density Grid? (y/N) : ',$)
+      write (*,95)
+   95 format(/'  Choose a Density Structure '/
+     &     ' ::::::::::::::::::::::::::::::::::::::::::::::::::::'/
+     &     '    C  : isoChoric,  (const volume)'/
+     &     '    B  : isoBaric, (const pressure)'/
+     &     ' :: ',$)
+      read (*,20) jden
+c
+      if ((jden(1:1).eq.'C').or.(jden(1:1).eq.'c')) jden='C'
+      if ((jden(1:1).eq.'B').or.(jden(1:1).eq.'b')) jden='B'
+c
+c
+      write(*,97)
+   97 format(//' Input Density/Pressure Grid? (y/N) : ',$)
 c
       if (taskid.eq.0) read (*,20) ilgg
       call mpi_barrier(MPI_COMM_WORLD, taskerr)
@@ -322,7 +336,7 @@ c
       if (ilgg.eq.'y') goto 99
 c
       write(*,98)
-   98 format(//' Input Density Vaule : ',$)
+   98 format(//' Input Density/Pressure Vaule : ',$)
       if (taskid.eq.0) read (*,*) dhntmp
       call mpi_barrier(MPI_COMM_WORLD, taskerr)
       call mpi_bcast(dhntmp,1,MPI_REAL8,0,MPI_COMM_WORLD,taskerr)
@@ -330,7 +344,7 @@ c
       do ix=1,mcnx
       do iy=1,mcny
       do iz=1,mcnz
-         dh_arr(ix,iy,iz) = dhntmp
+         hden_arr(ix,iy,iz) = dhntmp
       enddo 
       enddo 
       enddo 
@@ -339,7 +353,7 @@ c
 c
 c
    99 write(*,100)
-  100 format(/' Input Density File : ',$)
+  100 format(/' Input Density/Pressure File : ',$)
       if (taskid.eq.0) read (*,20) fnam
       call mpi_barrier(MPI_COMM_WORLD, taskerr)
       call mpi_bcast(fnam,512,MPI_CHARACTER,0,MPI_COMM_WORLD,taskerr)
@@ -376,8 +390,7 @@ c
             iy = j-blockid(2)*mcny
             iz = k-blockid(3)*mcnz
 c            
-            dh_arr(ix,iy,iz) = tmp
-            write (*,*), ix, iy, iz, i, j, k
+            hden_arr(ix,iy,iz) = tmp
 c
             endif            
 c            
@@ -387,7 +400,7 @@ c
 c
       endif
 c
-  105 write(*,*) 'Density Reading Complete'
+  105 write(*,*) 'Density/Pressure Reading Complete'
 c
 c     ***CHOOSING PHOTON SOURCE
 c
@@ -782,9 +795,10 @@ cccccc
          convg_arr(ix,iy,iz) = 0.0d0
 cccccc
 c
-         dhni=dh_arr(ix,iy,iz)          
+         dhni=hden_arr(ix,iy,iz)          
          tei=te_arr(ix,iy,iz)
          dei=de_arr(ix,iy,iz)
+         if (jden.eq.'B') dhni=(hden_arr(ix,iy,iz)/tei)/2.2d0
 c
          poparr(ix,iy,iz,1) = pop(2,zmap(1))
          poparr(ix,iy,iz,2) = pop(2,zmap(2))
@@ -883,9 +897,10 @@ c
          yps = iy
          zps = iz
 c
-         dhni=dh_arr(ix,iy,iz)          
+         dhni=hden_arr(ix,iy,iz)          
          tei=te_arr(ix,iy,iz)
          dei=de_arr(ix,iy,iz)  
+         if (jden.eq.'B') dhni=(hden_arr(ix,iy,iz)/tei)/2.2d0
 c
          inttphot=0.d0
          inttphot2=0.d0
@@ -1012,7 +1027,7 @@ c
      &                   q4field(ix,iy,iz),
      &                   inttphot,
      &                   rec0_arr(ix,iy,iz),
-     &                   dh_arr(ix,iy,iz)
+     &                   hden_arr(ix,iy,iz)
      &        ,hbeta,f5007,f4363,f3727,f6300,f6584,f6720
      &        ,((difg.le.1).and.(pop(2,zmap(1)).ge.fren)
      &          .and.(q1field(ix,iy,iz).gt.epsilon))

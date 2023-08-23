@@ -203,7 +203,7 @@ c      real*8 totline_arr(maxnx,maxny,maxnz)
 c      real*8 xarr(maxnx,maxny,maxnz)
 c      real*8 yarr(maxnx,maxny,maxnz)
 c      real*8 zarr(maxnx,maxny,maxnz)
-      real*8 dh_arr(maxnx,maxny,maxnz)
+      real*8 hden_arr(maxnx,maxny,maxnz)
       real*8 de_arr(maxnx,maxny,maxnz)
       real*8 te_arr(maxnx,maxny,maxnz) 
       real*8 vel_arr(maxnx,maxny,maxnz,3)      
@@ -1799,7 +1799,7 @@ c
      &                ,jnu_arr,jnuw_arr,vel_arr,resflux,resflux2 
      &                ,cwx,cwy,cwz,seed
 c
-      common /mcvar3/  dh_arr,de_arr,te_arr 
+      common /mcvar3/  hden_arr,de_arr,te_arr 
 c
       common /mcvar4/  nrange,taskerr,taskid,numtasks
 c
