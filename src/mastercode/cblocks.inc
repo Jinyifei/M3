@@ -192,17 +192,11 @@ c
       real*8 mcdengy(8)
       real*8 mcnuin,mcnuend   
       real*8 mcnu(7)        
-      real*8 sigmt_arr(maxnx,maxny,maxnz,mxinfph)
       real*8 rec0_arr(maxnx,maxny,maxnz)
       real*8 recpdf_arr(maxnx,maxny,maxnz,mxinfph)
-      real*8 strpdf_arr(mcnstar,mxinfph)
-c      real*8 totline_arr(maxnx,maxny,maxnz)
+C      real*8 strpdf_arr(mcnstar,mxinfph)
       real*8 jnu_arr(maxnx,maxny,maxnz,mxinfph)
-      real*8 jnuw_arr(2,mxinfph)
       real*8 resflux(mxinfph),resflux2(mxinfph)
-c      real*8 xarr(maxnx,maxny,maxnz)
-c      real*8 yarr(maxnx,maxny,maxnz)
-c      real*8 zarr(maxnx,maxny,maxnz)
       real*8 hden_arr(maxnx,maxny,maxnz)
       real*8 de_arr(maxnx,maxny,maxnz)
       real*8 te_arr(maxnx,maxny,maxnz) 
@@ -210,6 +204,7 @@ c      real*8 zarr(maxnx,maxny,maxnz)
       real*8 cwx(maxnx+1)      
       real*8 cwy(maxny+1)      
       real*8 cwz(maxnz+1)      
+      real*8 pop_arr(maxnx,maxny,maxnz,mxion,mxelem)
 c
       real*8 strpos(3)    
 c
@@ -1795,8 +1790,8 @@ c
      &                ,mcnuin,mcnuend,mcnu,mcnx,mcny,mcnz
      &                ,xps,yps,zps,intpt
 c
-      common /mcvar2/  sigmt_arr,rec0_arr,recpdf_arr,strpdf_arr
-     &                ,jnu_arr,jnuw_arr,vel_arr,resflux,resflux2 
+      common /mcvar2/  rec0_arr,recpdf_arr,pop_arr
+     &                ,jnu_arr,vel_arr,resflux,resflux2 
      &                ,cwx,cwy,cwz,seed
 c
       common /mcvar3/  hden_arr,de_arr,te_arr 
