@@ -46,6 +46,7 @@ c
       real*8 dhntmp, tmp
       real*8 velx, vely, velz
 c      real*8 fluxes(mxmonlines)
+      real*8 time
 c
       integer*4 lenv      
       integer*4 l,m,n
@@ -62,7 +63,7 @@ c      character=jtb*4
       character caract*4,ilgg*4
       character banfil*32
       character*512 fnam
-      character*512 grdfile,denfile,velfile
+      character*512 grdfile,denfile,velfile,outfile
       character jren*4,jrnu*4
 c
       logical iexi      
@@ -317,7 +318,9 @@ c
      &     '    C  : isoChoric,  (const volume)'/
      &     '    B  : isoBaric, (const pressure)'/
      &     ' :: ',$)
-      read (*,20) jden
+      if (taskid.eq.0) read (*,20) jden
+      call mpi_barrier(MPI_COMM_WORLD, taskerr)
+      call mpi_bcast(jden,4,MPI_CHARACTER,0,MPI_COMM_WORLD,taskerr)      
 c
       if ((jden(1:1).eq.'C').or.(jden(1:1).eq.'c')) jden='C'
       if ((jden(1:1).eq.'B').or.(jden(1:1).eq.'b')) jden='B'
@@ -445,6 +448,11 @@ c
 c
       rstar=1.d0
       astar=rstar*rstar
+c
+c      
+      write (*,140) blum,ilum,qht*astar
+     &           ,mcnuin,mcnuend,dflum0
+c            
 c
       if (blum.gt.0.d0) then
 c
@@ -680,13 +688,25 @@ c
          endif
       endif
 c
+c
+      write (*,320)
+  320 format(/' Output Directory : ',$)
+      if (taskid.eq.0) read (*,90) fnam
+      call mpi_barrier(MPI_COMM_WORLD, taskerr)
+      call mpi_bcast(fnam,512,MPI_CHARACTER,0,MPI_COMM_WORLD,taskerr)
+      m=lenv(fnam)
+      outfile=fnam(1:m)
+c
+      call mpi_barrier(MPI_COMM_WORLD, taskerr)      
+c
+c      
       difma=0.01d0
       dtlma=0.01d0
       dhlma=0.010d0
 c
 cc      stop
 c
-      call mciter (difma,dtlma,dhlma,blum,blum0)
+      call mciter (difma,dtlma,dhlma,blum,blum0,outfile)
 c
       end
 c
@@ -697,7 +717,7 @@ c     Start MC Iteration
 c
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 c
-      subroutine mciter (difma,dtlma,dhlma,blum,blum0)
+      subroutine mciter (difma,dtlma,dhlma,blum,blum0,outfile)
 c
       include 'cblocks.inc'
       include 'mpif.h'
@@ -747,7 +767,7 @@ c
 c
       integer*4 lulin,luop1,luop2
 c
-      character*512 outfile1, outfile2, outfile3
+      character*512 outfile1, outfile2, outfile3, outfile
 c
       dif(a,b)=dabs(dlog10(a+epsilon)-dlog10(b+epsilon))
 c
@@ -764,15 +784,19 @@ c
      &     '   MCITER SUBROUTINE IS RUN'/
      &     ' ****************************************************')
 c
-      outfile1 = "./output/structure.out"
-      outfile2 = "./output/all_spec.out"
-      outfile3 = "./output/all_spec_int.out"
+      outfile1 = '/structure.out'
+      outfile2 = '/all_spec.out'
+      outfile3 = '/all_spec_int.out'
 c         
       if (numtasks.gt.1) then
-         write (outfile1,'("./output/structure_",i0,".out")') taskid
-         write (outfile2,'("./output/all_spec_",i0,".out")') taskid
-         write (outfile3,'("./output/all_spec_int_",i0,".out")') taskid
+         write (outfile1,'("/structure_",i0,".out")') taskid
+         write (outfile2,'("/all_spec_",i0,".out")') taskid
+         write (outfile3,'("/all_spec_int_",i0,".out")') taskid
       endif
+c
+      outfile1 = trim(outfile)//outfile1
+      outfile2 = trim(outfile)//outfile2
+      outfile3 = trim(outfile)//outfile3
 c
 c
       m=0
@@ -840,20 +864,17 @@ c
 c
 cccccccccccccccccccccccccccc
 c
-      if (m.eq.1) then
+c      if (m.eq.1) then
          open (lulin,file=trim(outfile2),
      &    status='unknown')
 c
           do inl=1,infph-1
            write (lulin,*) photev(inl)
-     &     ,jnu_arr(1,1,1,inl)
-     &     ,recpdf_arr(1,1,1,inl)
-     &     ,sigmt_arr(1,1,1,inl)
-     &     ,te_arr(1,1,1),de_arr(1,1,1)
+     &     , soupho(inl)
           enddo
           close (lulin)
 c
-      endif
+c      endif
 c
       if (m.eq.-1) then
          open (lulin,file=trim(outfile2),
@@ -893,9 +914,17 @@ c
       do iy = 1, mcny
       do 30 iz = 1, mcnz        
 c
+c
+         f5007=0.0d0
+         f4363=0.0d0
+         f3727=0.0d0
+         f6300=0.0d0
+         f6584=0.0d0
+         f6720=0.0d0
+c
          xps = ix
          yps = iy
-         zps = iz
+         zps = iz         
 c
          dhni=hden_arr(ix,iy,iz)          
          tei=te_arr(ix,iy,iz)
@@ -966,7 +995,7 @@ c
          te_arr(ix,iy,iz)=tef
          de_arr(ix,iy,iz)=def
 c         
-   25    continue 
+c   25    continue 
          recpdf=0.d0
          rec0=0.d0
          call calpdf(tef,def,dhnf,recpdf,rec0) 
@@ -987,6 +1016,7 @@ c        Calculate Tau
 c
          call cool (tef,def,dhnf)                  
 c
+   25    continue
 c
 ccc         if (cov0.ge.0.7) then
 c
@@ -1024,21 +1054,21 @@ c
      &                   q1field(ix,iy,iz),
      &                   q2field(ix,iy,iz),
      &                   q3field(ix,iy,iz),
-     &                   q4field(ix,iy,iz),
-     &                   inttphot,
-     &                   rec0_arr(ix,iy,iz),
+     &                   q4field(ix,iy,iz)
+     &                   ,inttphot,
+c     &                   rec0_arr(ix,iy,iz),
      &                   hden_arr(ix,iy,iz)
      &        ,hbeta,f5007,f4363,f3727,f6300,f6584,f6720
-     &        ,((difg.le.1).and.(pop(2,zmap(1)).ge.fren)
-     &          .and.(q1field(ix,iy,iz).gt.epsilon))
-     &        ,((pop(2,zmap(1)).ge.fren)
-     &          .and.(q1field(ix,iy,iz).gt.epsilon))
-     &        ,(pop(j,zmap(1)),j=1,maxion(zmap(1)))
-     &        ,(pop(j,zmap(2)),j=1,maxion(zmap(2)))
-     &        ,(pop(j,zmap(8)),j=1,9)
-     &        ,(pop(j,zmap(16)),j=1,9)
-     &        ,poparr(ix,iy,iz,1)
-     &        ,poparr(ix,iy,iz,2)
+c     &        ,((difg.le.1).and.(pop(2,zmap(1)).ge.fren)
+c     &          .and.(q1field(ix,iy,iz).gt.epsilon))
+c     &        ,((pop(2,zmap(1)).ge.fren)
+c     &          .and.(q1field(ix,iy,iz).gt.epsilon))
+c     &        ,(pop(j,zmap(1)),j=1,maxion(zmap(1)))
+c     &        ,(pop(j,zmap(2)),j=1,maxion(zmap(2)))
+c     &        ,(pop(j,zmap(8)),j=1,9)
+c     &        ,(pop(j,zmap(16)),j=1,9)
+c     &        ,poparr(ix,iy,iz,1)
+c     &        ,poparr(ix,iy,iz,2)
 c
             close (lulin)     
 c
@@ -1110,7 +1140,7 @@ c
          goto 40
       endif
 c
-      if (cov.ge.convrt) goto 50
+c      if (cov.ge.convrt) goto 50
 c
       if ((m.gt.1).and.(abs(cov-cov0).le.0.2*cov))
      &   npck = npck * npckinc
@@ -1121,36 +1151,41 @@ c
 c
       if (taskid.eq.0) then
          if (m.eq.1)
-     &   open (lulin,file='./output/status.out', 
+     &   open (lulin,file=trim(outfile)//'/status.out', 
      &        status='unknown')   
 c
          if (m.gt.1)
-     &   open (lulin,file='./output/status.out',
+     &   open (lulin,file=trim(outfile)//'/status.out',
      &        status='OLD',access='APPEND')
          write (lulin,*) m, cov, totion, totpix, npck, 
-     &                   endtime - starttime   
+     &                   endtime - starttime, mcnuin, mcnuend 
          close(lulin) 
 c
 c
-         if (m.eq.1)
-     &   open (lulin,file='./output/grid.out', 
+         if (m.eq.1) then
+           open (lulin,file=trim(outfile)//'/grid.out', 
      &        status='unknown')
-         write (lulin,*) mcnx
-         do i=1,mcnx+1
-            write (lulin,*) i, cwx(i)
-         enddo  
-         write (lulin,*) mcny
-         do i=1,mcny+1
-            write (lulin,*) i, cwy(i)
-         enddo 
-         write (lulin,*) mcnz
-         do i=1,mcnz+1
-            write (lulin,*) i, cwz(i)
-         enddo 
-         close(lulin)
+           write (lulin,*) mcnx
+           do i=1,mcnx+1
+              write (lulin,*) i, cwx(i)
+           enddo  
+           write (lulin,*) mcny
+           do i=1,mcny+1
+              write (lulin,*) i, cwy(i)
+           enddo 
+           write (lulin,*) mcnz
+           do i=1,mcnz+1
+              write (lulin,*) i, cwz(i)
+           enddo 
+           close(lulin)
+         endif
 c
 c
-      endif        
+      endif 
+c
+      if (cov.ge.convrt) goto 50
+c
+      write (*,*) 'check point 1:', taskid      
 c
       if (m.le.20) then
 c
@@ -1238,18 +1273,13 @@ c
       lgsilence = .true.
 c
 c         
-      if (m.eq.1) write (*,10) 
+      if (m.eq.1.and.taskid.eq.0) write (*,10) 
    10 format(///
      &     ' ****************************************************'/
      &     '   MC-RT SUBROUTINE IS RUN  ')
       write (*,*) '   Loop: ', m
-c
-c     For radiation bounded case, there is no boundary limit      
-      if (diend.eq.-1.0d0) 
-     &    diend=dsqrt((cwx(mcnx+1)-cwx(1))**2.0d0
-     &               +(cwy(mcny+1)-cwy(1))**2.0d0
-     &               +(cwz(mcnz+1)-cwz(1))**2.0d0)
 c      
+c
 cccccccccccccc    
       strpos(1) = 0.0d0
       strpos(2) = 0.0d0
@@ -1277,7 +1307,7 @@ c
       if (.not.lgsilence) then
          if (taskid.eq.0) then
             write (*,*) 'Nphot, Npack0, Npack'
-            write (*,*) nphot, npck0, npck            
+            write (*,*) nphot, npck0, npck           
          endif
       endif
 c
@@ -1310,6 +1340,15 @@ c
      &             cwx(1), cwy(1), cwz(1)
          call mpi_barrier(MPI_COMM_WORLD, taskerr)
       endif 
+c
+c
+c     For radiation bounded case, there is no boundary limit      
+      if (diend.eq.-1.0d0)
+     &    diend=dsqrt((cwmax(1)-cwmin(1))**2.0d0
+     &               +(cwmax(2)-cwmin(2))**2.0d0
+     &               +(cwmax(3)-cwmin(3))**2.0d0)
+c         
+c      
 c
 ccccccccccccc
 c
@@ -1442,6 +1481,7 @@ c            wid=photev(nup+1)-photev(nup)
 c            mcde=soupho(nup)*wid*evplk*invnph*blum*invblum
             wid=photev(nupcnt+1)-photev(nupcnt)
             mcde=soupho(nupcnt)*wid*evplk*invnph*blum*invblum
+c  
 c
             lgactive=.true.
 c      
@@ -1717,7 +1757,6 @@ c
      &           =jnu_arr(ci(1),ci(2),ci(3),nupdp)+ds*mcde/dv
 c
 c
-c
                   if (isnan(jnu_arr(ci(1),ci(2),ci(3),nupdp)))
      &            then
                      write (*,*) 'abs', ds,ci(1),ci(2),ci(3)
@@ -1784,6 +1823,7 @@ c                  write (*,*) ci
                      jnu_arr(ci(1),ci(2),ci(3),nupdp)
      &                =jnu_arr(ci(1),ci(2),ci(3),nupdp)+ds*mcde/dv        
 c
+c                     
                   endif
 c
 c
