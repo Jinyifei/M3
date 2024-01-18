@@ -761,7 +761,7 @@ c
       real*8 rec0    
       real*8 rtmp, nsum1, nsum2    
 c
-      real*8 tmp1,tmp2,tmp3,tmp4,tmp5
+      real*8 tmp1,tmp2,tmp3,tmp4,tmp5,tmp6
 c
       real*8    starttime, endtime
 c
@@ -769,7 +769,10 @@ c
 c
       integer*4 lulin,luop1,luop2
 c
-      character*512 outfile1, outfile2, outfile3, outfile
+      character*512 outfile1, outfile2, outfile3
+c
+      character*512  outfile4, outfile
+c      
       logical iexi      
 c
       dif(a,b)=dabs(dlog10(a+epsilon)-dlog10(b+epsilon))
@@ -796,12 +799,22 @@ c
          write (outfile1,'("/structure_",i0,".out")') taskid
          write (outfile2,'("/all_spec_",i0,".out")') taskid
          write (outfile3,'("/pop_",i0,".dat")') taskid
+         write (outfile4,'("/grid_",i0,".out")') taskid         
       endif
 c
       outfile1 = trim(outfile)//outfile1
       outfile2 = trim(outfile)//outfile2
       outfile3 = trim(outfile)//outfile3
+      outfile4 = trim(outfile)//outfile4
 c
+c
+      open (lulin,file=trim(outfile4),
+     &    status='unknown')
+          do i = 1, mcnx+1
+           write (lulin,*) cwx(i), cwy(i), cwz(i)
+          enddo
+      close (lulin)
+c      
 c
       m=0
       incream=1
@@ -839,7 +852,7 @@ c
             do i=1,atypes
                read (luop2) (pop(j,zmap(i)),j=1,maxion(zmap(i)))  
             enddo
-            read (lulin,*) tmp1,tmp2,tmp3,tmp4,tmp5
+            read (lulin,*) tmp1,tmp2,tmp3,tmp4,tmp5,tmp6
          endif
 c         
          te_arr(ix,iy,iz)=tmp4  ! initial guess
@@ -867,8 +880,8 @@ c
             dustsigmat=0.d0
             call crosssections (inl, tauso, sigmt, dustsigmat)
             sigmt_arr(ix,iy,iz,inl)=sigmt*dhni
-         enddo  
-c
+         enddo 
+c         
       enddo
       enddo
       enddo   
@@ -877,7 +890,6 @@ c
          close(luop2)
          close(lulin)
       endif
-c
 c   
       goto 40
 c
@@ -1023,7 +1035,7 @@ c        convergence criteria
 c
          difte=dif(tef,tei)/dtlma
          dhhe=abs(1-poparr(ix,iy,iz,1)/pop(2,zmap(1)))
-         dhhe=dmax1(abs(1-poparr(ix,iy,iz,2)/pop(2,zmap(2))),dhhe)
+c         dhhe=dmax1(abs(1-poparr(ix,iy,iz,2)/pop(2,zmap(2))),dhhe)
          dhhe=dhhe/dhlma
          difg=dmax1(dhhe,difte)
          dhhe=dhhe/difma
@@ -1035,7 +1047,13 @@ c
 c
          if ((pop(2,zmap(1)).ge.fren)
      & .and.(q1.gt.epsilon)) totion=totion+1.d0
-         convg_arr(ix,iy,iz)=difg
+c
+c         
+         convg_arr(ix,iy,iz) = 0
+         if ((pop(2,zmap(1)).ge.fren)
+     & .and.(q1.gt.epsilon)) convg_arr(ix,iy,iz)=difg
+
+c         convg_arr(ix,iy,iz)=difg
 c        
          te_arr(ix,iy,iz)=tef
          de_arr(ix,iy,iz)=def
@@ -1095,12 +1113,14 @@ c
      &                      (cwy(iy)+cwy(iy+1))*0.5d0,
      &                      (cwz(iz)+cwz(iz+1))*0.5d0,
      &                      te_arr(ix,iy,iz),
+     &                      tei,       
      &                      de_arr(ix,iy,iz),
-     &                      q1,q2,q3,q4
-c     &                   q1field(ix,iy,iz),
-c     &                   q2field(ix,iy,iz),
-c     &                   q3field(ix,iy,iz),
-c     &                   q4field(ix,iy,iz)
+     &                      convg_arr(ix,iy,iz),
+     &                      q1,q2,q3,q4,
+     &                   q1field(ix,iy,iz),
+     &                   q2field(ix,iy,iz),
+     &                   q3field(ix,iy,iz),
+     &                   q4field(ix,iy,iz)
 c     &                   ,inttphot,
 c     &                   rec0_arr(ix,iy,iz),
 c     &                   hden_arr(ix,iy,iz)
@@ -1117,6 +1137,12 @@ c     &        ,poparr(ix,iy,iz,1)
 c     &        ,poparr(ix,iy,iz,2)
 c
 ccc            close (lulin)     
+c
+c
+         q1field(ix,iy,iz)=q1
+         q2field(ix,iy,iz)=q2
+         q3field(ix,iy,iz)=q3
+         q4field(ix,iy,iz)=q4
 c
 c
 cccccccccccc
@@ -1205,7 +1231,7 @@ c
 c
 c      if (cov.ge.convrt) goto 50
 c
-      if ((m.gt.1).and.(abs(cov-cov0).le.0.2*cov))
+      if ((m.gt.1).and.(abs(cov-cov0).le.0.5*cov))
      &   npck = npck * npckinc
 c
    40 m=m+1
@@ -1460,6 +1486,7 @@ c           direction
             hvec(2)=0.0d0
             hvec(3)=0.0d0                  
             call photdir (hvec)
+c            write (*,*) hvec(1), hvec(2), hvec(3)
             epckarr(nupcnt,iphot,4) = hvec(1)      
             epckarr(nupcnt,iphot,5) = hvec(2)      
             epckarr(nupcnt,iphot,6) = hvec(3) 
@@ -1993,6 +2020,7 @@ c                 Initialise photon Direction
                   hvec(2)=0.0d0
                   hvec(3)=0.0d0                  
                   call photdir (hvec)
+c                  write (*,*) hvec(1), hvec(2), hvec(3)
 c                  
 c                 Projected velocity for Doppler effect
                   dvel = vel_arr(xp,yp,zp,1)*hvec(1)
