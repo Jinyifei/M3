@@ -761,8 +761,6 @@ c
       real*8 rec0    
       real*8 rtmp, nsum1, nsum2    
 c
-      real*8 tmp1,tmp2,tmp3,tmp4,tmp5
-c
       real*8    starttime, endtime
 c
       real*8 feldens,fpressu,dif
@@ -770,7 +768,6 @@ c
       integer*4 lulin,luop1,luop2
 c
       character*512 outfile1, outfile2, outfile3, outfile
-      logical iexi      
 c
       dif(a,b)=dabs(dlog10(a+epsilon)-dlog10(b+epsilon))
 c
@@ -779,8 +776,7 @@ c
 c
       dton=1.d33
       nmod='EQUI'
-      lulin=7
-      luop2=8
+      lulin=5
 c
       write (*,10)  
    10 format(///
@@ -790,12 +786,12 @@ c
 c
       outfile1 = '/structure.out'
       outfile2 = '/all_spec.out'
-      outfile3 = '/pop.dat'
+      outfile3 = '/all_spec_int.out'
 c         
       if (numtasks.gt.1) then
          write (outfile1,'("/structure_",i0,".out")') taskid
          write (outfile2,'("/all_spec_",i0,".out")') taskid
-         write (outfile3,'("/pop_",i0,".dat")') taskid
+         write (outfile3,'("/all_spec_int_",i0,".out")') taskid
       endif
 c
       outfile1 = trim(outfile)//outfile1
@@ -812,45 +808,22 @@ c
         pop(1,i)=1.d-5
         pop(maxion(i),i)=1.d0-1.d-5                  
       enddo  
-c        
-c
-cccccc
-      tmp4 = 2000.d0
-      tmp5 = 10.d0
-cccccc
-c
-      inquire (file=trim(outfile1),exist=iexi)  
-      if (iexi) then
-c
-         open (lulin,file=trim(outfile1),status='OLD')
-         open (luop2,file=trim(outfile3),status='OLD',access='stream'
-     &     ,form='unformatted')  
-c
-         read (luop2) tmp1
-         write (*,*) "Re-start from Breking Loop: ", tmp1
-c
-      endif      
-c
+c      
       do ix = 1, mcnx
       do iy = 1, mcny
-      do iz = 1, mcnz
-c      
-         if (iexi) then
-            do i=1,atypes
-               read (luop2) (pop(j,zmap(i)),j=1,maxion(zmap(i)))  
-            enddo
-            read (lulin,*) tmp1,tmp2,tmp3,tmp4,tmp5
-         endif
-c         
-         te_arr(ix,iy,iz)=tmp4  ! initial guess
-         de_arr(ix,iy,iz)=tmp5
+      do iz = 1, mcnz         
+c
+cccccc
+         te_arr(ix,iy,iz)=2000.d0  ! initial guess
+         de_arr(ix,iy,iz)=0.0d0
          convg_arr(ix,iy,iz) = 0.0d0
+cccccc
 c
          dhni=hden_arr(ix,iy,iz)          
          tei=te_arr(ix,iy,iz)
          dei=de_arr(ix,iy,iz)
          if (jden.eq.'B') dhni=(hden_arr(ix,iy,iz)/tei)/2.2d0
-c         
+c
          poparr(ix,iy,iz,1) = pop(2,zmap(1))
          poparr(ix,iy,iz,2) = pop(2,zmap(2))
 c
@@ -872,12 +845,6 @@ c
       enddo
       enddo
       enddo   
-c      
-      if (iexi) then
-         close(luop2)
-         close(lulin)
-      endif
-c
 c   
       goto 40
 c
@@ -942,18 +909,6 @@ c
 
 ccc      endif
 c
-ccccccc
-c
-         open (lulin,file=trim(outfile1),status='unknown')
-c
-c
-         open (luop2,file=trim(outfile3),status='unknown',
-     &         form='unformatted',access='stream')
-         write (luop2) m*1.0d0
-cc         close(luop2)
-c
-ccccccc
-c
 c
       do ix = 1, mcnx
       do iy = 1, mcny
@@ -1003,10 +958,10 @@ c         write (*,*) 'call intvec, taskid', taskid
          call intvec (tphot, q1, q2, q3, q4)         
 c         write (*,*) 'call intvec end, taskid', taskid
 c         
-ccc         q1field(ix,iy,iz)=q1
-ccc         q2field(ix,iy,iz)=q2
-ccc         q3field(ix,iy,iz)=q3
-ccc         q4field(ix,iy,iz)=q4
+         q1field(ix,iy,iz)=q1
+         q2field(ix,iy,iz)=q2
+         q3field(ix,iy,iz)=q3
+         q4field(ix,iy,iz)=q4
 c
          ipho=1
          iphom=0 ! ionising field changes
@@ -1088,23 +1043,22 @@ c
                f6720=hsii(m)
             endif
 c
-ccc            open (lulin,file=trim(outfile1),
-ccc     &        status='OLD',access='APPEND') 
+            open (lulin,file=trim(outfile1),
+     &        status='OLD',access='APPEND') 
 c
             write (lulin,*) (cwx(ix)+cwx(ix+1))*0.5d0,
-     &                      (cwy(iy)+cwy(iy+1))*0.5d0,
-     &                      (cwz(iz)+cwz(iz+1))*0.5d0,
-     &                      te_arr(ix,iy,iz),
-     &                      de_arr(ix,iy,iz),
-     &                      q1,q2,q3,q4
-c     &                   q1field(ix,iy,iz),
-c     &                   q2field(ix,iy,iz),
-c     &                   q3field(ix,iy,iz),
-c     &                   q4field(ix,iy,iz)
-c     &                   ,inttphot,
+     &                   (cwy(iy)+cwy(iy+1))*0.5d0,
+     &                   (cwz(iz)+cwz(iz+1))*0.5d0,
+     &                   te_arr(ix,iy,iz),
+     &                   de_arr(ix,iy,iz),
+     &                   q1field(ix,iy,iz),
+     &                   q2field(ix,iy,iz),
+     &                   q3field(ix,iy,iz),
+     &                   q4field(ix,iy,iz)
+     &                   ,inttphot,
 c     &                   rec0_arr(ix,iy,iz),
-c     &                   hden_arr(ix,iy,iz)
-c     &        ,hbeta,f5007,f4363,f3727,f6300,f6584,f6720
+     &                   hden_arr(ix,iy,iz)
+     &        ,hbeta,f5007,f4363,f3727,f6300,f6584,f6720
 c     &        ,((difg.le.1).and.(pop(2,zmap(1)).ge.fren)
 c     &          .and.(q1field(ix,iy,iz).gt.epsilon))
 c     &        ,((pop(2,zmap(1)).ge.fren)
@@ -1116,20 +1070,7 @@ c     &        ,(pop(j,zmap(16)),j=1,9)
 c     &        ,poparr(ix,iy,iz,1)
 c     &        ,poparr(ix,iy,iz,2)
 c
-ccc            close (lulin)     
-c
-c
-cccccccccccc
-ccc            open (luop2,file=trim(outfile3),status='OLD',
-ccc     &            form='unformatted',access='APPEND')
-c
-            do i=1,atypes
-            write (luop2)  (pop(j,zmap(i)),j=1,maxion(zmap(i)))              
-            enddo
-c              
-ccc            close (luop2)
-cccccccccccc
-c
+            close (lulin)     
 c
             dv=((cwx(ix+1)-cwx(ix))
      &         *(cwy(iy+1)-cwy(iy))
@@ -1147,10 +1088,6 @@ c
    30 continue 
       enddo
       enddo 
-c
-c
-      close(luop2)
-      close(lulin)
 c
 c
       if (cov0.ge.0.7) then
@@ -2420,9 +2357,9 @@ c
      &           ia1=40014,ia2=40692,iq1=53668,iq2=52774,ir1=12211,
      &           ir2=3791,ntab=32,ndiv=1+imm1/ntab,eps=1.2d-7,
      &           rnmx=1.0d0-eps)
-      integer idum2,j,k,iv(ntab),iiyy
-      save iv,iiyy,idum2
-      data idum2/123456789/, iv/ntab*0/, iiyy/0/
+      integer idum2,j,k,iv(ntab),iy
+      save iv,iy,idum2
+      data idum2/123456789/, iv/ntab*0/, iy/0/
       if (idum.le.0) then
          idum=max(-idum,1)
          idum2=idum
@@ -2432,7 +2369,7 @@ c
             if (idum.lt.0) idum=idum+im1
             if (j.le.ntab) iv(j)=idum
          enddo
-         iiyy=iv(1)
+         iy=iv(1)
       endif 
       k=idum/iq1
       idum=ia1*(idum-k*iq1)-k*ir1
@@ -2440,11 +2377,11 @@ c
       k=idum2/iq2
       idum2=ia2*(idum2-k*iq2)-k*ir2
       if (idum2.lt.0) idum2=idum2+im2
-      j=1+iiyy/ndiv
-      iiyy=iv(j)-idum2
+      j=1+iy/ndiv
+      iy=iv(j)-idum2
       iv(j)=idum
-      if (iiyy.lt.1) iiyy=iiyy+imm1
-      ran2=min(am*iiyy,rnmx)
+      if (iy.lt.1) iy=iy+imm1
+      ran2=min(am*iy,rnmx)
 c
       return
 c      
