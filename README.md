@@ -5,6 +5,7 @@ Jin et al. 2022ab
 
 This is specific to M3 developers.
 
+The code can only accept odd grid
 
 # Branches
 main: MPI M3
