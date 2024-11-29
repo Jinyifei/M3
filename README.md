@@ -1,7 +1,7 @@
-# M3
-
-Jin et al. 2022ab
-
+	Creative Commons v4.0 International
+	By Attribution, Share Alike
+	CC-BY-SA-4.0Intl https://creativecommons.org
+ 
 
 
 
