@@ -100,6 +100,7 @@ OBJ = ${CODDIR}mappings.o \
 	${CODDIR}cool.o \
 	${CODDIR}cosmic.o \
 	${CODDIR}crosssections.o \
+	${CODDIR}dcrosint.o \
 	${CODDIR}dusttemp.o \
 	${CODDIR}equion.o \
 	${CODDIR}evoltem.o \
@@ -130,7 +131,7 @@ OBJ = ${CODDIR}mappings.o \
 	${CODDIR}mapinit.o \
 	${CODDIR}mdiag.o \
         ${CODDIR}mcteequi.o \
-	${CODDIR}montph7.o \
+	${CODDIR}montph7_dust.o \
         ${CODDIR}mcspec.o \
 	${CODDIR}multilevel.o \
 	${CODDIR}neqc.o \

@@ -192,7 +192,7 @@ c
       real*8 mcdengy(8)
       real*8 mcnuin,mcnuend   
       real*8 mcnu(7)        
-      real*8 sigmt_arr(maxnx,maxny,maxnz,mxinfph)
+      real*8 sigmt_arr(maxnx,maxny,maxnz,mxinfph,2)
       real*8 rec0_arr(maxnx,maxny,maxnz)
       real*8 recpdf_arr(maxnx,maxny,maxnz,mxinfph)
       real*8 strpdf_arr(mcnstar,mxinfph)
@@ -211,7 +211,7 @@ c      real*8 zarr(maxnx,maxny,maxnz)
       real*8 cwy(maxny+1)      
       real*8 cwz(maxnz+1)      
 c
-      real*8 strpos(3)    
+      real*8 strpos(3),strpos_arr(3,mcnstar)    
 c
       integer*4 nrange,npck,npckinc,seed     
       integer*4 taskerr,taskid,numtasks
@@ -1799,7 +1799,7 @@ c
      &                ,jnu_arr,jnuw_arr,vel_arr,resflux,resflux2 
      &                ,cwx,cwy,cwz,seed
 c
-      common /mcvar3/  hden_arr,de_arr,te_arr 
+      common /mcvar3/  hden_arr,de_arr,te_arr,strpos,strpos_arr
 c
       common /mcvar4/  nrange,taskerr,taskid,numtasks
 c

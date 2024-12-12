@@ -319,7 +319,7 @@ c
       if (ilgg(1:2).eq.'CD') call critdens
       if (ilgg(1:2).eq.'SS') call slab
       if (ilgg(1:2).eq.'PP') call phocrv
-      if (ilgg(1:2).eq.'MP') call montph7
+      if (ilgg(1:2).eq.'MP') call montph7_dust
 c
 c
       goto 50

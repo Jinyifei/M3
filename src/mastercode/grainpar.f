@@ -582,7 +582,9 @@ c
           if (qlimit.eq.'Q') then
    90    format(' Give QHDN dust limit (<=100 as log [10.500] ): ',$)
             write (*,90)
-            read (*,*) qn
+            if (taskid.eq.0) read (*,*) qn
+      call mpi_barrier(MPI_COMM_WORLD, taskerr)
+      call mpi_bcast(qn,1,MPI_REAL8,0,MPI_COMM_WORLD,taskerr)            
             write (*,*)
             if (qn.le.100.d0) qn=10.d0**qn
             qh=qn/zen
@@ -593,7 +595,9 @@ c
           if (qlimit.eq.'H') then
   100    format(' Give QHDH dust limit (<=100 as log : [10.500] ): ',$)
             write (*,100)
-            read (*,*) qh
+            if (taskid.eq.0) read (*,*) qh
+      call mpi_barrier(MPI_COMM_WORLD, taskerr)
+      call mpi_bcast(qh,1,MPI_REAL8,0,MPI_COMM_WORLD,taskerr)            
             write (*,*)
             if (qh.le.100.d0) qh=10.d0**qh
             grainmaxq=qh
@@ -603,7 +607,9 @@ c
           if (qlimit.eq.'U') then
   110    format(' Give U(H) dust limit (<=100 as log : [0.00] ): ',$)
             write (*,110)
-            read (*,*) uh
+            if (taskid.eq.0) read (*,*) uh
+      call mpi_barrier(MPI_COMM_WORLD, taskerr)
+      call mpi_bcast(uh,1,MPI_REAL8,0,MPI_COMM_WORLD,taskerr)             
             write (*,*)
             if (uh.le.100.d0) uh=10.d0**uh
             grainmaxq=uh*cls
@@ -613,7 +619,9 @@ c
   120    format(' Give dust temperature limit (<=10 as log : [5.00] ): '
      &     ,$)
           write (*,120)
-          read (*,*) tlim
+          if (taskid.eq.0) read (*,*) tlim
+      call mpi_barrier(MPI_COMM_WORLD, taskerr)
+      call mpi_bcast(tlim,1,MPI_REAL8,0,MPI_COMM_WORLD,taskerr)           
           write (*,*)
           if (tlim.le.10.d0) tlim=10.d0**tlim
           grainmaxtemp=tlim
@@ -636,7 +644,9 @@ c
      &        '   (Note: need full DUSTDATA for P or S)'/
      &        /' :: ',$)
 c     &        '    E   :  Exponential  N(a) = k exp(a/alpha)'/
-        read (*,'(a)') gdist
+      if (taskid.eq.0) read (*,'(a)') gdist
+      call mpi_barrier(MPI_COMM_WORLD, taskerr)
+      call mpi_bcast(gdist,4,MPI_CHARACTER,0,MPI_COMM_WORLD,taskerr)        
         gdist=gdist(1:1)
         write (*,*)
         if (gdist.eq.'p') gdist='P'
@@ -668,7 +678,9 @@ c      Power - Law N(a) = A^alpha
 c
           write (*,150)
   150     format(/,' Enter alpha (MRN=-3.5)::',$)
-          read (*,*) galpha
+          if (taskid.eq.0) read (*,*) galpha
+      call mpi_barrier(MPI_COMM_WORLD, taskerr)
+      call mpi_bcast(galpha,1,MPI_REAL8,0,MPI_COMM_WORLD,taskerr)            
           write (*,*)
 c
 c     Enter min and max grain radii (within 1e-3, 10 mu)
@@ -679,7 +691,9 @@ c
   160     format(/' Give graphite grain min. radius ',
      &           '(<10 in mu, >=10 in Angs.) :',$)
   170     write (*,160)
-          read (*,*) amin(1)
+          if (taskid.eq.0) read (*,*) amin(1)
+      call mpi_barrier(MPI_COMM_WORLD, taskerr)
+      call mpi_bcast(amin(1),1,MPI_REAL8,0,MPI_COMM_WORLD,taskerr)            
           write (*,*)
 c
           if (amin(1).le.0.d0) goto 170
@@ -689,7 +703,9 @@ c
   180     format(/' Give graphite grain max. (> grain min) radius ',
      &           '(<10 in mu, >=10 in Angs.) :',$)
   190     write (*,180)
-          read (*,*) amax(1)
+          if (taskid.eq.0) read (*,*) amax(1)
+      call mpi_barrier(MPI_COMM_WORLD, taskerr)
+      call mpi_bcast(amax(1),1,MPI_REAL8,0,MPI_COMM_WORLD,taskerr)            
           write (*,*)
 c
           if (amax(1).le.0.d0) goto 190
@@ -702,7 +718,9 @@ c
   200        format(/' Give silicate grain min. radius ',
      &           '(<10 in mu, >=10 in Angs.) :',$)
   210     write (*,200)
-          read (*,*) amin(2)
+          if (taskid.eq.0) read (*,*) amin(2)
+      call mpi_barrier(MPI_COMM_WORLD, taskerr)
+      call mpi_bcast(amin(2),1,MPI_REAL8,0,MPI_COMM_WORLD,taskerr)            
           write (*,*)
 c
           if (amin(2).le.0.d0) goto 210
@@ -712,7 +730,9 @@ c
   220        format(/' Give silicate grain max. (> grain min) radius ',
      &           '(<10 in mu, >=10 in Angs.) :',$)
   230     write (*,220)
-          read (*,*) amax(2)
+          if (taskid.eq.0) read (*,*) amax(2)
+      call mpi_barrier(MPI_COMM_WORLD, taskerr)
+      call mpi_bcast(amax(2),1,MPI_REAL8,0,MPI_COMM_WORLD,taskerr)            
           write (*,*)
 c
           if (amax(2).le.0.d0) goto 230
@@ -741,13 +761,17 @@ c     then find corresponding grain radius bins
 c
           write (*,250)
   250     format(/,' Enter alpha (Jones=-3.3, MRN=-3.5)::',$)
-          read (*,*) galpha
+          if (taskid.eq.0) read (*,*) galpha
+      call mpi_barrier(MPI_COMM_WORLD, taskerr)
+      call mpi_bcast(galpha,1,MPI_REAL8,0,MPI_COMM_WORLD,taskerr)            
 c     Graphite first (type=1)
 c
   260        format(/' Give graphite grain min. radius ',
      &           '(<10 in mu, >=10 in Angs.) :',$)
   270     write (*,260)
-          read (*,*) amin(1)
+          if (taskid.eq.0) read (*,*) amin(1)
+      call mpi_barrier(MPI_COMM_WORLD, taskerr)
+      call mpi_bcast(amin(1),1,MPI_REAL8,0,MPI_COMM_WORLD,taskerr)            
 c
           if (amin(1).le.0.d0) goto 270
           if (amin(1).ge.10.d0) amin(1)=amin(1)/1d4
@@ -756,7 +780,9 @@ c
   280        format(/' Give graphite grain max. (> grain min) radius ',
      &           '(<10 in mu, >=10 in Angs.) :',$)
   290     write (*,280)
-          read (*,*) amax(1)
+          if (taskid.eq.0) read (*,*) amax(1)
+      call mpi_barrier(MPI_COMM_WORLD, taskerr)
+      call mpi_bcast(amax(1),1,MPI_REAL8,0,MPI_COMM_WORLD,taskerr)            
           write (*,*)
 c
           if (amax(1).le.0.d0) goto 290
@@ -769,7 +795,9 @@ c
   300        format(/' Give silicate grain min. radius ',
      &           '(<10 in mu, >=10 in Angs.) :',$)
   310     write (*,300)
-          read (*,*) amin(2)
+          if (taskid.eq.0) read (*,*) amin(2)
+      call mpi_barrier(MPI_COMM_WORLD, taskerr)
+      call mpi_bcast(amin(2),1,MPI_REAL8,0,MPI_COMM_WORLD,taskerr)            
           write (*,*)
 c
           if (amin(2).le.0.d0) goto 310
@@ -779,7 +807,9 @@ c
   320        format(/' Give silicate grain max. (> grain min) radius ',
      &           '(<10 in mu, >=10 in Angs.) :',$)
   330     write (*,320)
-          read (*,*) amax(2)
+          if (taskid.eq.0) read (*,*) amax(2)
+      call mpi_barrier(MPI_COMM_WORLD, taskerr)
+      call mpi_bcast(amax(2),1,MPI_REAL8,0,MPI_COMM_WORLD,taskerr)  
           write (*,*)
 c
           if (amax(2).le.0.d0) goto 330
@@ -859,13 +889,17 @@ c
   380   write (*,390)
   390    format(/' Give graphite grain density (~1.85 g/cm^3) :',$)
 c
-        read (*,*) graindens(1)
+        if (taskid.eq.0) read (*,*) graindens(1)
+      call mpi_barrier(MPI_COMM_WORLD, taskerr)
+      call mpi_bcast(graindens(1),1,MPI_REAL8,0,MPI_COMM_WORLD,taskerr)          
         write (*,*)
         if (graindens(1).le.0.d0) goto 380
 c
   400   write (*,410)
   410    format(/' Give silicate grain density (~2.5 g/cm^3) :',$)
-        read (*,*) graindens(2)
+        if (taskid.eq.0) read (*,*) graindens(2)
+      call mpi_barrier(MPI_COMM_WORLD, taskerr)
+      call mpi_bcast(graindens(2),1,MPI_REAL8,0,MPI_COMM_WORLD,taskerr) 
         write (*,*)
         if (graindens(2).le.0.d0) goto 400
 c
@@ -895,7 +929,9 @@ c
 c
   420    format(/' Include PAH molecules? (y/n) :',$)
   430   write (*,420)
-        read (*,'(a)') ilgg
+        if (taskid.eq.0) read (*,'(a)') ilgg
+      call mpi_barrier(MPI_COMM_WORLD, taskerr)
+      call mpi_bcast(ilgg,4,MPI_CHARACTER,0,MPI_COMM_WORLD,taskerr)        
         ilgg=ilgg(1:1)
         write (*,*)
 c
@@ -909,7 +945,9 @@ c
   440      format(/' Give fraction of Carbon Dust',
      &            ' Depletion in PAHs :',$)
   450     write (*,440)
-          read (*,*) pahcfrac
+          if (taskid.eq.0) read (*,*) pahcfrac
+      call mpi_barrier(MPI_COMM_WORLD, taskerr)
+      call mpi_bcast(pahcfrac,1,MPI_REAL8,0,MPI_COMM_WORLD,taskerr)           
           write (*,*)
 c
           if (pahcfrac.lt.0.d0) goto 450
@@ -924,7 +962,9 @@ c
      &     ,'   I :  PAH ionizing radiation/ local ISRF ratio < Value',/
      &     ,'   Q :  QHDH < Value',/
      &     ,' :: ',$)
-            read (*,*) ilgg
+        if (taskid.eq.0) read (*,*) ilgg
+      call mpi_barrier(MPI_COMM_WORLD, taskerr)
+      call mpi_bcast(ilgg,4,MPI_CHARACTER,0,MPI_COMM_WORLD,taskerr)              
             ilgg=ilgg(1:1)
             write (*,*)
             if (ilgg.eq.'h') ilgg='H'
@@ -939,7 +979,9 @@ c
   480       write (*,490)
   490       format(/
      &      ' Give PAH switch on Value (<=100 as log : [4.00] ):',$)
-            read (*,*) pahlimit
+          if (taskid.eq.0) read (*,*) pahlimit
+      call mpi_barrier(MPI_COMM_WORLD, taskerr)
+      call mpi_bcast(pahlimit,1,MPI_REAL8,0,MPI_COMM_WORLD,taskerr)             
             if (pahlimit.le.100.d0) pahlimit=10.d0**pahlimit
             write (*,*)
 c
@@ -954,7 +996,9 @@ c
   500     format(' Do you wish graphite grains to be cospatial'
      &           ,' with PAHs?',/
      &           ,' (PAH destroyed = C grain destroyed):',$)
-            read (*,*) ilgg
+            if (taskid.eq.0) read (*,*) ilgg
+      call mpi_barrier(MPI_COMM_WORLD, taskerr)
+      call mpi_bcast(ilgg,4,MPI_CHARACTER,0,MPI_COMM_WORLD,taskerr)            
             ilgg=ilgg(1:1)
             write (*,*)
             if (ilgg.eq.'y') ilgg='Y'
@@ -966,7 +1010,9 @@ c
         write (*,510)
   510 format(/' Evaluate dust temperatures and IR flux? (P5/P6 only)',/,
      &  '  (WARNING: will slow down computing time) (y/N):',$)
-        read (*,'(a)') ilgg
+        if (taskid.eq.0) read (*,'(a)') ilgg
+      call mpi_barrier(MPI_COMM_WORLD, taskerr)
+      call mpi_bcast(ilgg,4,MPI_CHARACTER,0,MPI_COMM_WORLD,taskerr)        
         ilgg=ilgg(1:1)
         write (*,*)
         if (ilgg.eq.'y') ilgg='Y'
@@ -979,7 +1025,9 @@ c
      &      ,'    I :  Intermediate (100 bins, ~2% accurate',/
      &      ,'    S :  Slow (400 bins, accurate Temp. distributions)',/
      &      ,/,' :: ',$)
-          read (*,'(a)') ilgg
+        if (taskid.eq.0) read (*,'(a)') ilgg
+      call mpi_barrier(MPI_COMM_WORLD, taskerr)
+      call mpi_bcast(ilgg,4,MPI_CHARACTER,0,MPI_COMM_WORLD,taskerr)     
           ilgg=ilgg(1:1)
           if ((ilgg.eq.'q').or.(ilgg.eq.'Q')) then
             irmode=1
@@ -993,7 +1041,9 @@ c
 c       if (expertmode.gt.0) then
           write (*,540)
   540    format(/,' Output dust temperature data (large file) (y/n):',$)
-          read (*,'(a)') ilgg
+        if (taskid.eq.0) read (*,'(a)') ilgg
+      call mpi_barrier(MPI_COMM_WORLD, taskerr)
+      call mpi_bcast(ilgg,4,MPI_CHARACTER,0,MPI_COMM_WORLD,taskerr)     
           ilgg=ilgg(1:1)
           if (ilgg.eq.'y') ilgg='Y'
           if (ilgg.eq.'Y') then
