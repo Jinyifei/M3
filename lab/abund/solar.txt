@@ -1,0 +1,76 @@
+%
+%  FORMAT
+%  Title
+%  # entries [type] (I2,x,I2)
+%  Z  Offset/Scale
+%  ...
+%
+%  Note:
+%  type = 0, or no type present (ie old files)
+%        negative/0.0 offsets/scales are logarithmic, ie 0.00 is no change
+%        positive offsets/scales are linear, ie 1.00 is no change
+%
+%  type = 1:
+%        All abundances are logarithmic, by number H=0.00
+%
+%  type = 2:
+%        All abundances are linear, by number H=1.00
+%
+%  type = 3:
+%        All abundances are log +12.0 , by number H=12.00
+%
+%  Elements not included in the data file map.prefs will not be read
+%
+%  Elements not present in this file will have no effect on the
+%  default abundances.
+%
+% Asplund M., Grevesse N., Sauval A.J. & Scott P. (2009, ARAA, 47, 481)
+%
+%  @ARTICLE{2009ARA&A..47..481A,
+%    author = {{Asplund}, M. and {Grevesse}, N. and {Sauval}, A.~J. and {Scott}, P.},
+%     title = "{The Chemical Composition of the Sun}",
+%   journal = {\araa},
+% archivePrefix = "arXiv",
+%    eprint = {0909.0948},
+%  primaryClass = "astro-ph.SR",
+%      year = 2009,
+%     month = sep,
+%    volume = 47,
+%     pages = {481-522},
+%       doi = {10.1146/annurev.astro.46.060407.145222},
+%    adsurl = {http://adsabs.harvard.edu/abs/2009ARA%26A..47..481A},
+%   adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+% }
+%
+Solar Abundances Asplund et al 2009
+30  1
+01   0.00
+02  -1.07
+03 -10.95
+04 -10.62
+05  -9.30
+06  -3.57
+07  -4.17
+08  -3.31
+09  -7.44
+10  -4.07
+11  -5.76
+12  -4.40
+13  -5.55
+14  -4.49
+15  -6.59
+16  -4.88
+17  -6.50
+18  -5.60
+19  -6.97
+20  -5.66
+21  -8.85
+22  -7.05
+23  -8.07
+24  -6.36
+25  -6.57
+26  -4.50
+27  -7.01
+28  -5.78
+29  -7.81
+30  -7.44

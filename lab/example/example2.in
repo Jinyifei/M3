@@ -1,0 +1,46 @@
+yes     : change abund 
+example/example2.abn
+no      : change abundance
+no      : change offsets
+no      : Use Kappa
+yes     : include dust
+yes     : change depletions
+example/example2.dpl
+no      : Change depletions
+no      : Do not allow dust destruction
+M       : MRN distribution
+yes     : Include PAH molecules?
+0.3     : fraction of Carbon Dust Depletion in PAHs
+Q       : PAH switch on QHDH < Value
+4e2     : PAH switch on Value
+no      : graphite grains to be cospatial with PAHs
+no      : Evaluate dust temperatures and IR flux?
+mp     
+D       : Default ionisation values
+1 1 1
+example/example2.grid
+n
+c
+n
+10
+I       : Input data file
+example/example2.sou
+0       : Give the turn-on energy (Min.:   .00 eV.)
+1e6     : Give high energy cut-off
+X       : eXit with current source
+no      : Include Cosmic Ray
+L       : Luminosity
+T       : Total
+40      : Bolometric source luminosity (log erg/s)
+3 2 0.8
+1e18    : Distance
+a
+n
+example/result2/
+x
+
+
+
+
+
+

@@ -1,0 +1,56 @@
+%  FORMAT
+%  Title
+%  # entries [type]  (I2,x,I2)
+%  Z  Abundance
+%  .
+%  .
+%  .
+%  Note:
+%  type = 0, or no type present (ie old files)
+%        negative/0.0 offsets/scales are logarithmic, ie 0.00 is no change
+%        positive offsets/scales are linear, ie 1.00 is no change
+%
+%  type = 1:
+%        All abundances are logarithmic, wrt  H=0.00
+%
+%  type = 2:
+%        All abundances are logarithmic, wrt  H=12.00
+%
+%  type = 3:
+%        All abundances are linear , wrt H=1.00
+%
+%
+% Allen, C.W. 1972. (Astrophysical Quantities 3rd Edition)
+%
+Solar Abundances AQ3 Allen 1972
+30  1
+01   0.00
+02  -1.07
+03  -11.30
+04  -10.90
+05  -9.00
+06  -3.48
+07  -4.04
+08  -3.18
+09  -7.40
+10  -4.08
+11  -5.75
+12  -4.58
+13  -5.61
+14  -4.48
+15  -6.48
+16  -4.80
+17  -6.40
+18  -5.20
+19  -7.05
+20  -5.70
+21  -8.78
+22  -6.87
+23  -7.60
+24  -6.15
+25  -6.60
+26  -4.40
+27  -6.90
+28  -5.70
+29  -7.50
+30  -7.80

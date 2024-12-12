@@ -1,0 +1,33 @@
+%
+% Mattila et al 2010 SN1987A The Astrophysical Journal, 717:1140Ð1156, 2010 July 10
+%
+%	FORMAT
+%	Title
+%	# entries
+%	Z  Abundance	
+%	.
+%	.
+%	.
+%   Carbon from Hunter, I., et al. 2007, A&A, 466, 277
+%
+%	Note: negative abundances are logarithmic relaive to H = 0.0
+%
+%	Elements not included in the data file ATDAT will not be read
+%
+%	Elements not present in this file will have no effect on the 
+%	default abundances.
+%
+%	The Header lines are not needed but they are useful
+%
+SN1987A from Mattila et al 2010
+10
+ 1   1.00
+ 2  -0.77
+ 6  -4.25
+ 7  -3.56
+ 8  -3.73
+10  -4.07
+16  -4.88
+18  -5.77
+20  -5.49
+26  -5.02

@@ -1,0 +1,77 @@
+%
+% MAPPINGS V prefs file, sets read in atoms and
+% Atomic Weights:
+% M.E. Weiser and M. Berglund
+% Atomic Weights of the Elements 2007
+% NIST, Physical Measurement
+% Laboratory http://www.nist.gov/pml/data/comp.cfm
+%
+% These data do not represent a critical evaluation by
+% the NIST Physical Measurement Laboratory.
+%
+% Rounded to 7 figures for MAPPINGS V
+%
+% Default abundances:
+% Asplund M., Grevesse N., Sauval A.J. & Scott P. (2009, ARAA, 47, 481)
+%
+%  @ARTICLE{2009ARA&A..47..481A,
+%    author = {{Asplund}, M. and {Grevesse}, N. and {Sauval}, A.~J. and {Scott}, P.},
+%     title = "{The Chemical Composition of the Sun}",
+%   journal = {\araa},
+% archivePrefix = "arXiv",
+%    eprint = {0909.0948},
+%  primaryClass = "astro-ph.SR",
+%      year = 2009,
+%     month = sep,
+%    volume = 47,
+%     pages = {481-522},
+%       doi = {10.1146/annurev.astro.46.060407.145222},
+%    adsurl = {http://adsabs.harvard.edu/abs/2009ARA%26A..47..481A},
+%   adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+% }
+% [ Metallicity (Zgas):  1.0000    xSolar,    ni/nh:  1.0862     ]
+% [ mu_neu:  1.2584       mu_ion:  .60364      mu_h:  1.3668     ]
+% [ Mass Fractions  X:  .73743     Y:  .24925     Z: 1.33237E-02 ]
+%
+% AGSS 2009 Abundance Scales:
+% [Fe/H]   =   0.000
+% [O/H]    =   0.000
+%
+% Absolute Scales:
+% [O] + 12 =   8.690
+% [O]      =  -3.310
+% [Fe]     =  -4.500
+%
+%  Default abundances:
+%  Asplund et al 2009, Solar Photosphere
+%
+%
+ MAPPINGS V Standard Atom Set v5.2.0
+ 16
+  1  H      1  1.007940 1.0000E+00  1.000    2
+  2  He     2  4.002602 8.5114E-02  1.000    3
+  3  C      6  12.01070 2.6915E-04  1.000    7
+  4  N      7  14.00670 6.7608E-05  1.000    8
+  5  O      8  15.99940 4.8978E-04  1.000    9
+  6  Ne    10  20.17970 8.5114E-05  1.000   11
+  7  Na    11  22.98977 1.7378E-06  1.000   12
+  8  Mg    12  24.30500 3.9811E-05  1.000   13
+  9  Al    13  26.98154 2.8184E-06  1.000   14
+ 10  Si    14  28.08550 3.2359E-05  1.000   15
+ 11  S     16  32.06500 1.3183E-05  1.000   17
+ 12  Cl    17  35.45300 3.1623E-07  1.000   18
+ 13  Ar    18  39.94800 2.5119E-06  1.000   19
+ 14  Ca    20  40.07800 2.1878E-06  1.000   21
+ 15  Fe    26  55.84500 3.1623E-05  1.000   27
+ 16  Ni    28  58.69340 1.6596E-06  1.000   29
+%
+% PHOTDAT File
+% PHOTDAT-std.txt
+%
+% Kappa Mode
+% 1
+%
+% misc data can be stored after this comment
+% Here species that are not often used are
+% Stored. To use them place them above and
+% update the count and column 1.

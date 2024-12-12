@@ -1,0 +1,56 @@
+%  FORMAT
+%  Title
+%  # entries [type]  (I2,x,I2)
+%  Z  Abundance
+%  .
+%  .
+%  .
+%  Note:
+%  type = 0, or no type present (ie old files)
+%        negative/0.0 offsets/scales are logarithmic, ie 0.00 is no change
+%        positive offsets/scales are linear, ie 1.00 is no change
+%
+%  type = 1:
+%        All abundances are logarithmic, wrt  H=0.00
+%
+%  type = 2:
+%        All abundances are logarithmic, wrt  H=12.00
+%
+%  type = 3:
+%        All abundances are linear , wrt H=1.00
+%
+%
+% Anders E. & Grevesse N. (1989, Geochimica et Cosmochimica Acta 53, 197)
+%
+Solar Abundances Anders E. & Grevesse N. 1989
+30
+01   0.00
+02  -1.01
+03  -10.84
+04  -10.85
+05  -9.40
+06  -3.44
+07  -3.95
+08  -3.07
+09  -7.44
+10  -3.91
+11  -5.67
+12  -4.42
+13  -5.53
+14  -4.45
+15  -6.55
+16  -4.79
+17  -6.73
+18  -5.44
+19  -6.88
+20  -5.64
+21  -8.90
+22  -7.01
+23  -8.00
+24  -6.32
+25  -6.61
+26  -4.33
+27  -7.07
+28  -5.75
+29  -7.79
+30  -7.40

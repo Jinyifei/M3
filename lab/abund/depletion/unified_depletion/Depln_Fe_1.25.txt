@@ -1,0 +1,56 @@
+%
+%  FORMAT
+%  Title
+%  # entries [type] (I2,x,I2)
+%  Z  Offset/Scale
+%  .
+%  .
+%  .
+%
+%  Note:
+%  type = 0, or no type present (ie old files)
+%        negative/0.0 offsets/scales are logarithmic, ie 0.00 is no change
+%        positive offsets/scales are linear, ie 1.00 is no change
+%  type = 1:
+%        All offsets/scales are logarithmic, ie +0.00 is no change
+%  type = 2:
+%        All offsets/scales are linear , ie x1.00 is no change
+%  type = 3:
+%        All offsets/scales are log+12 , ie H = 12.00
+%
+%  Elements not included in the data file map.prefs will not be read
+%
+% Depletion file For Jenkins 2014 + MAD interpolation
+%
+Base Depletion: Fe -1.25
+30  1
+ 1   0.00
+ 2   0.00
+ 3  -0.10
+ 4  -0.28
+ 5  -0.46
+ 6  -0.13
+ 7  -0.02
+ 8  -0.06
+ 9   0.00
+10   0.00
+11  -0.30
+12  -0.50
+13  -0.50
+14  -0.49
+15   0.00
+16   0.00
+17   0.00
+18   0.00
+19  -0.50
+20  -1.55
+21  -0.49
+22  -1.55
+23  -1.68
+24  -1.16
+25  -1.11
+26  -1.25
+27  -1.37
+28  -1.28
+29  -0.76
+30  -0.08

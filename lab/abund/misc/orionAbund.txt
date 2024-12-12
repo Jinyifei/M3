@@ -1,0 +1,66 @@
+%
+%  FORMAT
+%  Title
+%  # entries [type] (I2,x,I2)
+%  Z  Offset/Scale
+%  .
+%  .
+%  .
+%
+%  Note:
+%  type = 0, or no type present (ie old files)
+%        negative/0.0 offsets/scales are logarithmic, ie 0.00 is no change
+%        positive offsets/scales are linear, ie 1.00 is no change
+%  type = 1:
+%        All offsets/scales are logarithmic, ie +0.00 is no change
+%  type = 2:
+%        All offsets/scales are linear , ie x1.00 is no change
+%  type = 3:
+%        All offsets/scales are log+12 , ie H = 12.00
+%
+%  Elements not included in the data file map.prefs will not be read
+%
+%  Elements not present in this file will have no effect on the
+%  default abundances.
+%
+% Data from P. Scott et al. 2014 (I,II,III) used for
+%  Na Al P S Cl Ar K Ca Sc Ti V Cr Mn Co Ni Cu Zn
+%
+% Data from M.-F. Nieva, and N. Przybilla, A&A 539, A143 (2012) B stars
+%  used for He C N O Ne Mg Si Fe
+%
+% Data from Asplund et al. 2009 used for Li Be B F
+%
+%
+Concordance Solar Vicinity Standard 2014
+30  1
+ 1    0.00
+ 2   -1.01
+ 3  -10.95
+ 4  -10.62
+ 5   -9.30
+ 6   -3.67
+ 7   -4.21
+ 8   -3.24
+ 9   -7.44
+10   -3.91
+11   -5.79
+12   -4.44
+13   -5.57
+14   -4.50
+15   -6.59
+16   -4.88
+17   -6.50
+18   -5.60
+19   -6.96
+20   -5.68
+21   -8.84
+22   -7.10
+23   -8.11
+24   -6.38
+25   -6.58
+26   -4.48
+27   -7.07
+28   -5.80
+29   -7.82
+30   -7.44

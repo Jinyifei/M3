@@ -1,0 +1,75 @@
+%
+%  FORMAT
+%  Title
+%  # entries [type] (I2,x,I2)
+%  Z  Offset/Scale
+%  ...
+%
+%  Note:
+%  type = 0, or no type present (ie old files)
+%        negative/0.0 offsets/scales are logarithmic, ie 0.00 is no change
+%        positive offsets/scales are linear, ie 1.00 is no change
+%
+%  type = 1:
+%        All abundances are logarithmic, by number H=0.00
+%
+%  type = 2:
+%        All abundances are linear, by number H=1.00
+%
+%  type = 3:
+%        All abundances are log +12.0 , by number H=12.00
+%
+%  Elements not included in the data file map.prefs will not be read
+%
+% MAPPINGS v4.2.4s
+% Abundance File
+% http://mica.local/miv/
+% Generated Sun Aug 24 13:11:49 EST 2014
+%
+% Asplund M., Grevesse N., Sauval A.J. & Scott P. (2009, ARAA, 47, 481)
+%
+% [ Metallicity (Zgas):  1.9999    xSolar,    ni/nh:  1.0986     ]
+% [ mu_neu:  1.3023       mu_ion:  .61974      mu_h:  1.4308     ]
+% [ Mass Fractions  X:  .70448     Y:  .27007     Z: 2.54548E-02 ]
+%
+% AGSS 2009 Abundance Scales:
+% [Fe/H]   =   0.301
+% [O/H]    =   0.301
+%
+% Absolute Scales:
+% [O] + 12 =   8.991
+% [O]      =  -3.009
+% [Fe]     =  -4.199
+%
+Solar, Asplund et al 2009
+30  1
+ 1  0.0000
+ 2 -1.0153
+ 3 -10.649
+ 4 -10.319
+ 5 -8.9990
+ 6 -3.2690
+ 7 -3.8690
+ 8 -3.0090
+ 9 -7.1390
+10 -3.7690
+11 -5.4590
+12 -4.0990
+13 -5.2490
+14 -4.1890
+15 -6.2890
+16 -4.5790
+17 -6.1990
+18 -5.2990
+19 -6.6690
+20 -5.3590
+21 -8.5490
+22 -6.7490
+23 -7.7690
+24 -6.0590
+25 -6.2690
+26 -4.1990
+27 -6.7090
+28 -5.4790
+29 -7.5090
+30 -7.1390

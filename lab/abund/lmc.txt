@@ -1,0 +1,44 @@
+%
+%  FORMAT
+%  Title
+%  # entries [type] (I2,x,I2)
+%  Z  Offset/Scale
+%  ...
+%
+%  Note:
+%  type = 0, or no type present (ie old files)
+%        negative/0.0 offsets/scales are logarithmic, ie 0.00 is no change
+%        positive offsets/scales are linear, ie 1.00 is no change
+%
+%  type = 1:
+%        All abundances are logarithmic, by number H=0.00
+%
+%  type = 2:
+%        All abundances are linear, by number H=1.00
+%
+%  type = 3:
+%        All abundances are log +12.0 , by number H=12.00
+%
+%  Elements not included in the data file map.prefs will not be read
+%
+%	LMC standard abundances: Ref: Russell, S. C., & Dopita, M. A. 1992, ApJ, 384, 508
+%
+%	The Header lines are not needed but they are useful
+%
+LMC abundances from Russell 1992
+15  1
+ 1   0.00
+ 2  -1.05
+ 6  -3.96
+ 7  -4.86
+ 8  -3.65
+10  -4.39
+11  -4.85
+12  -4.53
+14  -4.28
+16  -5.29
+17  -7.23
+18  -5.71
+20  -6.03
+26  -4.77
+28  -6.04

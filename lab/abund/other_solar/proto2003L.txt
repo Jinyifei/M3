@@ -1,0 +1,57 @@
+%
+%  FORMAT
+%  Title
+%  # entries [type] (I2,x,I2)
+%  Z  Offset/Scale
+%  ...
+%
+%  Note:
+%  type = 0, or no type present (ie old files)
+%        negative/0.0 offsets/scales are logarithmic, ie 0.00 is no change
+%        positive offsets/scales are linear, ie 1.00 is no change
+%
+%  type = 1:
+%        All abundances are logarithmic, by number H=0.00
+%
+%  type = 2:
+%        All abundances are linear, by number H=1.00
+%
+%  type = 3:
+%        All abundances are log +12.0 , by number H=12.00
+%
+%  Elements not included in the data file map.prefs will not be read
+%
+%    Lodders, K (2003, ApJ 591, 1220)
+%
+Proto Solar Abundances Lodders 2003
+30  1
+01   0.000
+02  -1.016
+03  -8.642
+04  -10.518
+05  -9.147
+06  -3.536
+07  -4.096
+08  -3.236
+09  -7.461
+10  -4.054
+11  -5.626
+12  -4.377
+13  -5.461
+14  -4.386
+15  -6.463
+16  -4.738
+17  -6.667
+18  -5.375
+19  -6.819
+20  -5.587
+21  -8.852
+22  -7.002
+23  -7.926
+24  -6.277
+25  -6.424
+26  -4.463
+27  -7.020
+28  -5.706
+29  -7.664
+30  -7.297

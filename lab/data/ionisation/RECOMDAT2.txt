@@ -1,0 +1,32 @@
+%
+% Badnell 2015 empirically adjusted DR and RR recombination for SIII -> SII
+% only adjusted fit is available - will try to fit raw results too
+% to remain consistent with the other 465 rates.
+%
+%   note contains *both* DR and RR fits.  switch setting should cover both
+%
+%    title
+%    nions
+%
+%    atom ion isos type nterms nlevels
+%
+%     03 dr = aDR(T) = T^-3/2 ∑_levels ∑_i c_i exp[-∆E_i/T] i = 1..7
+%     l  c_1 C_2....c_7
+%      .....
+%     l  E_1 E_2....E_7
+%      .....
+%     A    B    T0    T1    C    T2
+%
+% cf std type 1 16 03 14 01 5.8170D-07 1.3910D-06 1.1230D-05 1.5210D-04 1.8750D-03 2.0970D-02 0.0000D+00 0.0000D+00 3.6280D+02 1.0580D+03 7.1600D+03 3.2600D+04 1.2350D+05 2.0700D+05 0.0000D+00 0.0000D+00
+%
+%
+Badnell 2015 Recombination SIII Coefficients v5.1.21
+01
+16 03 14 03 07 03
+01 2.539E-07 4.184E-07 2.763E-06 1.035E-05 7.592E-05 8.686E-03 5.991E-05
+02 1.130E-07 4.769E-07 2.841E-06 1.847E-05 4.040E-04 3.371E-03 3.371E-03
+03 3.176E-08 9.676E-07 2.311E-06 1.139E-05 1.645E-04 5.610E-03 0.000E+00
+01 1.244E+02 1.428E+03 5.411E+03 2.514E+04 8.384E+04 2.050E+05 7.858E+05
+02 2.185E+02 1.889E+03 5.729E+03 3.255E+04 1.381E+05 2.047E+05 2.090E+05
+03 2.384E+02 2.149E+03 5.553E+03 2.616E+04 1.030E+05 2.031E+05 0.000E+00
+2.326E-11 4.601E-01 3.639E+02 2.170E+07 3.398E-01 7.597E+05

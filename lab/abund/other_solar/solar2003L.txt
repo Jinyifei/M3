@@ -1,0 +1,56 @@
+%  FORMAT
+%  Title
+%  # entries [type]  (I2,x,I2)
+%  Z  Abundance
+%  .
+%  .
+%  .
+%  Note:
+%  type = 0, or no type present (ie old files)
+%        negative/0.0 offsets/scales are logarithmic, ie 0.00 is no change
+%        positive offsets/scales are linear, ie 1.00 is no change
+%
+%  type = 1:
+%        All abundances are logarithmic, wrt  H=0.00
+%
+%  type = 2:
+%        All abundances are logarithmic, wrt  H=12.00
+%
+%  type = 3:
+%        All abundances are linear , wrt H=1.00
+%
+%
+%    Lodders, K (2003, ApJ 591, 1220)
+%
+Solar Abundances Lodders 2003
+30  1
+01   0.00
+02  -1.10
+03  -8.72
+04 -10.59
+05  -9.22
+06  -3.61
+07  -4.17
+08  -3.31
+09  -7.54
+10  -4.13
+11  -5.70
+12  -4.45
+13  -5.54
+14  -4.46
+15  -6.54
+16  -4.81
+17  -6.74
+18  -5.45
+19  -6.89
+20  -5.66
+21  -8.93
+22  -7.08
+23  -8.00
+24  -6.35
+25  -6.50
+26  -4.53
+27  -7.09
+28  -5.78
+29  -7.74
+30  -7.37

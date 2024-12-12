@@ -1,0 +1,61 @@
+%
+%  FORMAT
+%  Title
+%  # entries [type] (I2,x,I2)
+%  Z  Offset/Scale
+%  ...
+%
+%  Note:
+%  type = 0, or no type present (ie old files)
+%        negative/0.0 offsets/scales are logarithmic, ie 0.00 is no change
+%        positive offsets/scales are linear, ie 1.00 is no change
+%
+%  type = 1:
+%        All abundances are logarithmic, by number H=0.00
+%
+%  type = 2:
+%        All abundances are linear, by number H=1.00
+%
+%  type = 3:
+%        All abundances are log +12.0 , by number H=12.00
+%
+%  Elements not included in the data file map.prefs will not be read
+%
+% 2014 updated 2009 abundances
+% H -Ne: Asplund M., Grevesse N., Sauval A.J. & Scott P. (2009, ARAA, 47, 481)
+% Na-Ca: Scott, Grevesse, Asplund, Sauval, Lind, Takeda, Collet, Trampedach, Hayek, arXiv.1405.0279v1 2014
+% Sc-Ni: Scott, Asplund, Grevesse, Bergemann, Sauval, arXiv1405.0287v1 2014
+% Cu-Zn: Grevesse, Scott, Asplund, Sauval arXiv1405.0288v1 2014%
+%
+Solar Abundances 2014 revision AGSS 2009
+30  1
+01   0.00
+02  -1.07
+03 -10.95
+04 -10.62
+05  -9.30
+06  -3.57
+07  -4.17
+08  -3.31
+09  -7.44
+10  -4.07
+11  -5.79
+12  -4.41
+13  -5.57
+14  -4.49
+15  -6.59
+16  -4.88
+17  -6.50
+18  -5.60
+19  -6.96
+20  -5.68
+21  -8.84
+22  -7.10
+23  -8.11
+24  -6.38
+25  -6.58
+26  -4.53
+27  -7.07
+28  -5.80
+29  -7.82
+30  -7.44

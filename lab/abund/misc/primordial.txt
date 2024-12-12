@@ -1,0 +1,56 @@
+% Scaled Solar Abundances plus:
+%
+%  FORMAT
+%  Title
+%  # entries [type] (I2,x,I2)
+%  Z  Offset/Scale
+%  ...
+%
+%  Note:
+%  type = 0, or no type present (ie old files)
+%        negative/0.0 offsets/scales are logarithmic, ie 0.00 is no change
+%        positive offsets/scales are linear, ie 1.00 is no change
+%
+%  type = 1:
+%        All abundances are logarithmic, by number H=0.00
+%
+%  type = 2:
+%        All abundances are linear, by number H=1.00
+%
+%  type = 3:
+%        All abundances are log +12.0 , by number H=12.00
+%
+%  Elements not included in the data file map.prefs will not be read
+%
+% He/H = 0.0737+0.024*Z/Z_sol
+%
+% Alpha Enhancements
+%
+% C Ê Ê Ê1.5x scaled solar
+% N Ê Ê Ê1.0x Ê Ê Ê- " -
+% O Ê Ê Ê5.0x Ê Ê Ê- " -
+% Mg Ê Ê 2.5x Ê Ê - " -
+% Si Ê Ê 2.5x Ê Ê - " -
+% Ca Ê Ê 2.5x Ê Ê - " -
+%
+%   Solar Ref: Asplund, Grevesse & Sauval 2005,
+%   ASP Conf. Ser. 336 eds T.G. Barnes & F.N. Bash
+%
+Alpha Enhanced Priordial [Fe/H] = -4.0
+16  0
+ 1  1.000000E+00
+ 2  7.370240E-02
+ 6  3.855594E-08
+ 7  6.309573E-09
+ 8  2.285441E-07
+10  1.230269E-08
+11  1.778279E-10
+12  9.504735E-09
+13  2.454709E-10
+14  8.089843E-09
+16  1.621810E-09
+17  3.162278E-10
+18  6.309573E-10
+20  5.727170E-10
+26  2.818383E-09
+28  2.089296E-10

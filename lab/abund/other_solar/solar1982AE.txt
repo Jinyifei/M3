@@ -1,0 +1,56 @@
+%  FORMAT
+%  Title
+%  # entries [type]  (I2,x,I2)
+%  Z  Abundance
+%  .
+%  .
+%  .
+%  Note:
+%  type = 0, or no type present (ie old files)
+%        negative/0.0 offsets/scales are logarithmic, ie 0.00 is no change
+%        positive offsets/scales are linear, ie 1.00 is no change
+%
+%  type = 1:
+%        All abundances are logarithmic, wrt  H=0.00
+%
+%  type = 2:
+%        All abundances are logarithmic, wrt  H=12.00
+%
+%  type = 3:
+%        All abundances are linear , wrt H=1.00
+%
+%
+%  Anders E. & Ebihara (1982, Geochimica et Cosmochimica Acta 46, 2363)
+%
+Solar Abundances Anders E. & Ebihara 1982
+30  1
+01  0.000
+02 -1.096
+03 -8.659
+04 -10.542
+05 -9.054
+06 -3.351
+07 -4.040
+08 -3.130
+09 -7.509
+10 -3.891
+11 -5.679
+12 -4.404
+13 -5.506
+14 -4.435
+15 -6.418
+16 -4.723
+17 -6.715
+18 -5.418
+19 -6.858
+20 -5.658
+21 -8.906
+22 -7.055
+23 -7.965
+24 -6.308
+25 -6.456
+26 -4.480
+27 -7.082
+28 -5.741
+29 -7.724
+30 -7.335
