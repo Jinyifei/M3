@@ -15,9 +15,8 @@
   are required when using the code.
   
   https://ui.adsabs.harvard.edu/abs/2022ApJ...927...37J/abstract
-  https://ui.adsabs.harvard.edu/abs/2004ApJS..153....9G/abstract
   https://ui.adsabs.harvard.edu/abs/1993ApJS...88..253S/abstract
-          
+
 
 
 
