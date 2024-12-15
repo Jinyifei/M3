@@ -1319,25 +1319,25 @@ c
    40 m=m+1
 c
 c     
-      if (m.eq.1) then
-         write (outfile6,'("/grid_",i0,".out")') taskid
+c      if (m.eq.1) then
+c         write (outfile6,'("/grid_",i0,".out")') taskid
 
-         open (lulin,file=trim(outfile)//outfile6,
-     &        status='unknown')
-         write (lulin,*) mcnx
-         do i=1,mcnx+1
-              write (lulin,*) i, cwx(i)
-         enddo
-         write (lulin,*) mcny
-         do i=1,mcny+1
-              write (lulin,*) i, cwy(i)
-         enddo
-         write (lulin,*) mcnz
-         do i=1,mcnz+1
-              write (lulin,*) i, cwz(i)
-         enddo
-         close(lulin)
-      endif
+c         open (lulin,file=trim(outfile)//outfile6,
+c     &        status='unknown')
+c         write (lulin,*) mcnx
+c         do i=1,mcnx+1
+c              write (lulin,*) i, cwx(i)
+c         enddo
+c         write (lulin,*) mcny
+c         do i=1,mcny+1
+c              write (lulin,*) i, cwy(i)
+c         enddo
+c         write (lulin,*) mcnz
+c         do i=1,mcnz+1
+c              write (lulin,*) i, cwz(i)
+c         enddo
+c         close(lulin)
+c      endif
 c
 c
       call cpu_time(endtime)      
