@@ -1,0 +1,191 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Example Models &mdash; M3 v1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=76e2d817"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Output Data" href="outfile.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/m3logo6_profile.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data.html">Pre-existing files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="infile.html">Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="outfile.html">Output Data</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Example Models</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">M3</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Example Models</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/example.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="example-models">
+<h1>Example Models<a class="headerlink" href="#example-models" title="Link to this heading"></a></h1>
+<p>On Github, two example models are stored under <code class="docutils literal notranslate"><span class="pre">m3/lab/exampe/</span></code></p>
+<p>1: <em>a black body ionized pure gas nebula</em> <strong>(example1)</strong>,</p>
+<p>2: <em>an input stellar ionized dusty nebula</em> <strong>(example2)</strong>.</p>
+<section id="pure-gas-hii-region-model">
+<h2>Pure gas HII region model<a class="headerlink" href="#pure-gas-hii-region-model" title="Link to this heading"></a></h2>
+<p class="rubric" id="model-setup1">Set up the model example1</p>
+<p>Go to <code class="docutils literal notranslate"><span class="pre">/example</span></code>, review the input files and make the subdirectory <code class="docutils literal notranslate"><span class="pre">result1</span></code> to store the output files.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>~/M3/lab/example
+
+$<span class="w"> </span>ls<span class="w"> </span>example1*
+
+$<span class="w"> </span>mkdir<span class="w"> </span>results1
+</pre></div>
+</div>
+<p class="rubric" id="run-model1">Run the model example1</p>
+<p>Go back to <code class="docutils literal notranslate"><span class="pre">m3/lab</span></code>, and run the model example1.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>../
+
+$<span class="w"> </span>./m3<span class="w"> </span>&lt;<span class="w"> </span>example/example1.in
+</pre></div>
+</div>
+</section>
+<section id="dusty-gas-hii-region-model">
+<h2>Dusty gas HII region model<a class="headerlink" href="#dusty-gas-hii-region-model" title="Link to this heading"></a></h2>
+<p class="rubric" id="model-setup2">Set up the model example2</p>
+<p>Go to <code class="docutils literal notranslate"><span class="pre">/example</span></code>, review the input files and make the subdirectory <code class="docutils literal notranslate"><span class="pre">result2</span></code> to store the output files.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>~/M3/lab/example
+
+$<span class="w"> </span>ls<span class="w"> </span>example2*
+
+$<span class="w"> </span>mkdir<span class="w"> </span>results2
+</pre></div>
+</div>
+<p class="rubric" id="run-model2">Run the model example2</p>
+<p>Go back to <code class="docutils literal notranslate"><span class="pre">m3/lab</span></code>, and run the model example1.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>../
+
+$<span class="w"> </span>./m3<span class="w"> </span>&lt;<span class="w"> </span>example/example2.in
+</pre></div>
+</div>
+</section>
+<section id="glance-at-the-output-data">
+<h2>Glance at the output data<a class="headerlink" href="#glance-at-the-output-data" title="Link to this heading"></a></h2>
+<p>Check the model in <code class="docutils literal notranslate"><span class="pre">m3/lab/example/result1</span></code>. The 3D distribution of some physical variables are stored in <code class="docutils literal notranslate"><span class="pre">structure.out</span></code>. Assuming we use <code class="docutils literal notranslate"><span class="pre">python</span></code> to analyse the data, the commands are below:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>m3/lab/example/result1
+
+$<span class="w"> </span>python3
+
+$<span class="w"> </span>&gt;&gt;&gt;import<span class="w"> </span>numpy<span class="w"> </span>as<span class="w"> </span>np
+
+$<span class="w"> </span>&gt;&gt;&gt;data<span class="w"> </span><span class="o">=</span><span class="w"> </span>np.loadtxt<span class="o">(</span><span class="s1">&#39;structure.out&#39;</span><span class="o">)</span>
+
+$<span class="w"> </span>&gt;&gt;&gt;x<span class="w"> </span><span class="o">=</span><span class="w"> </span>data<span class="o">[</span>:,0<span class="o">]</span>
+
+$<span class="w"> </span>&gt;&gt;&gt;r<span class="w"> </span><span class="o">=</span><span class="w"> </span>np.sqrt<span class="o">(</span>data<span class="o">[</span>:,0<span class="o">]</span>**2+data<span class="o">[</span>:,1<span class="o">]</span>**2+data<span class="o">[</span>:,2<span class="o">]</span>**2<span class="o">)</span>
+</pre></div>
+</div>
+<p>Plot the electron temperature profile:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>&gt;&gt;&gt;import<span class="w"> </span>matplotlib.pyplot<span class="w"> </span>as<span class="w"> </span>plt
+
+$<span class="w"> </span>&gt;&gt;&gt;plt.plot<span class="o">(</span>r,<span class="w"> </span>data<span class="o">[</span>:,3<span class="o">]</span>,<span class="w"> </span><span class="s1">&#39;.&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>Plot the electron density profile:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>&gt;&gt;&gt;plt.plot<span class="o">(</span>r,<span class="w"> </span>data<span class="o">[</span>:,<span class="o">]</span>,<span class="w"> </span><span class="s1">&#39;.&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>Go through the same process for the dusty HII region model.</p>
+<p><em>The output profiles are below:</em></p>
+<p>For the <strong>Pure HII region model</strong></p>
+<figure class="align-default">
+<a class="reference internal image-reference" href="_images/example_1.png"><img alt="_images/example_1.png" src="_images/example_1.png" style="width: 800px;" />
+</a>
+</figure>
+<p>For the <strong>Dusty HII region model</strong></p>
+<figure class="align-default">
+<a class="reference internal image-reference" href="_images/example_2.png"><img alt="_images/example_2.png" src="_images/example_2.png" style="width: 800px;" />
+</a>
+</figure>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="outfile.html" class="btn btn-neutral float-left" title="Output Data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Yifei Jin.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

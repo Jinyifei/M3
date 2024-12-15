@@ -1,0 +1,138 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>M3 &mdash; M3 v1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=76e2d817"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Getting Started" href="install.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#">
+            
+              <img src="_static/m3logo6_profile.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data.html">Pre-existing files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="infile.html">Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="outfile.html">Output Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example.html">Example Models</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">M3</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">M3</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="m3">
+<h1>M3<a class="headerlink" href="#m3" title="Link to this heading"></a></h1>
+<section id="d-astrophysical-photoionization-code">
+<h2><em>3D Astrophysical Photoionization Code</em><a class="headerlink" href="#d-astrophysical-photoionization-code" title="Link to this heading"></a></h2>
+<figure class="align-default" id="id1">
+<a class="reference internal image-reference" href="_images/m3logo6.jpg"><img alt="_images/m3logo6.jpg" src="_images/m3logo6.jpg" style="width: 700px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Background Image Credits: NASA, ESA, CSA, STSci, Webb ERO Production Team</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p><strong>M3</strong>, Messenger Monte-Carlo MAPPINGS, is a 3D Monte-Carlo radiative transfer photoionization code.
+It is a descendant of the MAPPINGS family.
+The MAPPINGS photoionization project began in 1976, led by Michael Dopita.
+Since the 1980s, MAPPINGS have been re-written and maintained by Ralph Sutherland.
+M3 is the latest version of MAPPINGS, incorporating the Monte-Carlo radiative transfer technique established by Lucy (1999).</p>
+<p>M3 is a <strong>uniform grid-based</strong>, <strong>MPI</strong> code written in <strong>Fortran77</strong>, can be run on super computer clusters. It is designed for the high-spectral resolution (maximal 10240 frequency bins) and the customized spatial resolution.
+To run M3, MPICH and Fortran compilers are required.</p>
+<section id="reference">
+<h3>Reference<a class="headerlink" href="#reference" title="Link to this heading"></a></h3>
+<p>Please cite the following two publications if you use, modify <strong>M3</strong> for your own research. <em>Jin et al. 2022</em> describes the <strong>M3</strong> code. <em>Sutherland et al. 1993</em> describes the microphysics used in the <strong>MAPPINGS</strong> serial codes.</p>
+<p>[1] Jin, Y.; Kewley, L.; Sutherland, R. 2022,
+<a class="reference external" href="https://iopscience.iop.org/article/10.3847/1538-4357/ac48f3/pdf">https://iopscience.iop.org/article/10.3847/1538-4357/ac48f3/pdf</a></p>
+<p>[2] Sutherland, R.; Dopita, M. 1993,
+<a class="reference external" href="https://articles.adsabs.harvard.edu/pdf/1993ApJS...88..253S">https://articles.adsabs.harvard.edu/pdf/1993ApJS…88..253S</a></p>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="install.html" class="btn btn-neutral float-right" title="Getting Started" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Yifei Jin.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
