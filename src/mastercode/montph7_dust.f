@@ -803,7 +803,7 @@ c
       lulin=7
       luop2=9
       luop3=11
-      luop5=13
+c      luop5=13
 c      
       write (*,14)  
    14 format(///
@@ -825,14 +825,14 @@ c
          write (outfile2,'("/all_spec_",i0,".out")') taskid
          write (outfile3,'("/pop_",i0,".dat")') taskid
          write (outfile4,'("/line_",i0,".map")') taskid       
-         write (outfile5,'("/phlss_",i0,".map")') taskid
+c         write (outfile5,'("/phlss_",i0,".map")') taskid
       endif
 c
       outfile1 = trim(outfile)//outfile1
       outfile2 = trim(outfile)//outfile2
       outfile3 = trim(outfile)//outfile3
       outfile4 = trim(outfile)//outfile4
-      outfile5 = trim(outfile)//outfile5
+c      outfile5 = trim(outfile)//outfile5
 c
       starfile = trim(outfile)//starfile      
 c
@@ -1028,7 +1028,7 @@ cc         close(luop2)
 c
          open (luop3,file=trim(outfile4),status='unknown')
 c      
-         open (luop5,file=trim(outfile5),status='unknown')         
+c         open (luop5,file=trim(outfile5),status='unknown')         
 c
 c
 ccccccc
@@ -1207,10 +1207,10 @@ ccc     &                     ,pop(2,1),caseab(1)
 cccc--------------------
 c
 c
-         call wmodel (luop5, te_arr(ix,iy,iz),
-     &                       de_arr(ix,iy,iz),
-     &                       hden_arr(ix,iy,iz),
-     &                       1, 'LOSS')    
+c         call wmodel (luop5, te_arr(ix,iy,iz),
+c     &                       de_arr(ix,iy,iz),
+c     &                       hden_arr(ix,iy,iz),
+c     &                       1, 'LOSS')    
 c
 c
 cccccc
@@ -1252,7 +1252,7 @@ c
       enddo 
 c
 c
-      close(luop5)
+c      close(luop5)
       close(luop3)
       close(luop2)
       close(lulin)
