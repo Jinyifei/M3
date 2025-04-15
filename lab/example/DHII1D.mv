@@ -1,0 +1,49 @@
+yes     : change abund ***************************DUST & ABUNDANCES
+example/DHII.abn
+no      : change abundance
+no      : change offsets
+no      : Use Kappa
+yes     : include dust
+yes     : change depletions
+example/1sol.dpl
+no      : Change depletions
+no      : Do not allow dust destruction
+M       : MRN distribution
+yes     : Include PAH molecules?
+0.3     : fraction of Carbon Dust Depletion in PAHs
+Q       : PAH switch on QHDH < Value
+4e2     : PAH switch on Value
+no      : graphite grains to be cospatial with PAHs
+no      : Evaluate dust temperatures and IR flux?
+P6      : Photo. Abs. distance step, full cont ***************************START P5
+D       : Default ionisation values
+I       : Input data file
+example/Int_0.1sol.sou
+0       : Give the turn-on energy (Min.:   .00 eV.)
+1e6     : Give high energy cut-off
+X       : eXit with current source
+no      : Include Cosmic Ray
+S       : Sphere
+L       : Luminosity
+T       : Total
+40      : Bolometric source luminosity (log erg/s)
+C       : IsoChoric
+10      : hydrogen density
+1.0     : Filling Factor
+D       : Q by distance
+1e18    : Distance
+Y       :
+E       : Equilibrium
+0.03    : Abs step
+A       : Std endig
+X       : Exit with std output
+example II
+X       : Exit model
+
+
+
+
+
+
+
+

@@ -1,0 +1,70 @@
+%
+%	SOLAR ABUNDANCES:ref Grevesse, Asplund, Sauval & Scott 2010, Ap&SS
+%	All approx +/- 0.05
+%
+%	FORMAT
+%	Title
+%	# entries
+%	Z  Abundance	
+%	.
+%	.
+%	.
+%	Z = 0.1 Z_solar
+%
+%	Note: negative abundances are logarithmic relaive to H = 0.0
+%
+%	Elements not included in the data file ATDAT will not be read
+%
+%	Elements not present in this file will have no effect on the 
+%	default abundances.
+%
+%	The Header lines are not needed but they are useful
+%
+%   for other abundances, use He/H = 0.0737+0.024*Z/Z_sol
+%   N & C from van Zee, & Esteban:
+%
+%	12+log(o/H)	log(N/O)	log(N/H)	log(C/H)	log(O/H)
+%	7	-2.13	-7.06	-6.03	-5
+%	7.1	-2.12	-6.95	-5.92	-4.9
+%	7.2	-2.10	-6.83	-5.8	-4.8
+%	7.3	-2.09	-6.72	-5.69	-4.7
+%	7.39	-2.07	-6.61	-5.58	-4.61
+%	7.5	-2.04	-6.47	-5.44	-4.5
+%	7.6	-2.02	-6.35	-5.32	-4.4
+%	7.69	-1.99	-6.23	-5.2	-4.31
+%	7.8	-1.94	-6.07	-5.04	-4.2
+%	7.9	-1.90	-5.93	-4.9	-4.1
+%	7.99	-1.85	-5.79	-4.76	-4.01
+%	8.1	-1.79	-5.62	-4.59	-3.9
+%	8.17	-1.75	-5.51	-4.48	-3.83
+%	8.3	-1.67	-5.30	-4.27	-3.7
+%	8.39	-1.60	-5.14	-4.11	-3.61
+%	8.5	-1.52	-4.95	-3.92	-3.5
+%	8.6	-1.44	-4.77	-3.74	-3.4
+%	8.69	-1.36	-4.60	-3.57	-3.31
+%	8.8	-1.27	-4.40	-3.37	-3.2
+%	8.9	-1.18	-4.21	-3.18	-3.1
+%	8.99	-1.10	-4.04	-3.01	-3.01
+%	9.1	-1.00	-3.83	-2.8	-2.9
+%	9.17	-0.91	-3.67	-2.64	-2.83
+%	9.3	-0.75	-3.38	-2.35	-2.7
+%	9.39	-0.63	-3.17	-2.14	-2.61
+Solar abundance from Grevesse, Asplund, Sauval & Scott 2010, Ap&SS
+16
+ 1   1.00
+ 2  -1.12
+ 6  -5.20
+ 7  -6.23
+ 8  -4.31
+10  -5.07
+11  -6.75
+12  -5.43
+13  -6.56
+14  -5.49
+16  -5.86
+17  -7.63
+18  -6.60
+20  -6.69
+26  -5.53
+28  -6.79
+
