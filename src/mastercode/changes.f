@@ -674,6 +674,7 @@ c
       subroutine depcha ()
 c
       include 'cblocks.inc'
+      include 'mpif.h'
 c
       real*8 zi,rm,rmf
 c
@@ -713,7 +714,10 @@ c
       write (*,50)
       write (*,100)
   100 format(/' Change dust depletion (y/N) : ',$)
-      read (*,110) ilgg
+      if (taskid.eq.0) read (*,110) ilgg
+      call mpi_barrier(MPI_COMM_WORLD, taskerr)
+      call mpi_bcast(ilgg,4,MPI_CHARACTER,0,MPI_COMM_WORLD,taskerr)
+
   110 format(a)
 c
       ilgg=ilgg(1:1)
@@ -747,7 +751,9 @@ c
   130   format(/' Enter dust depletion file name : ',$)
 c
   140   format(a)
-        read (*,140) fnam
+        if (taskid.eq.0)  read (*,140) fnam
+        call mpi_barrier(MPI_COMM_WORLD, taskerr)
+        call mpi_bcast(fnam,512,MPI_CHARACTER,0,MPI_COMM_WORLD,taskerr)
         m=lenv(fnam)
         depfile=fnam(1:m)
 c deltafile
@@ -838,7 +844,11 @@ c
           write (*,160) depfile(1:m)
   160       format(' File: ',a,' NOT FOUND...'/
      &           'Try again? or cancel? (a/c) : ',$)
-          read (*,170) ilgg
+c
+          if (taskid.eq.0) read (*,170) ilgg
+       call mpi_barrier(MPI_COMM_WORLD, taskerr)
+       call mpi_bcast(ilgg,4,MPI_CHARACTER,0,MPI_COMM_WORLD,taskerr)
+c      
   170       format(a)
           ilgg=ilgg(1:1)
 c

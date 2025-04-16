@@ -510,9 +510,9 @@ c
 ccc      parameter (maxnx = 13)
 ccc      parameter (maxny = 13)
 ccc      parameter (maxnz = 13)
-      parameter (maxnx = 34)
-      parameter (maxny = 34)
-      parameter (maxnz = 34)
+      parameter (maxnx = 11)
+      parameter (maxny = 11)
+      parameter (maxnz = 11)
 c
 ccc      parameter (mcdx = 3.0d18)
 ccc      parameter (mcdy = 3.0d18)

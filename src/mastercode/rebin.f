@@ -54,6 +54,7 @@ c
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 c
       include 'cblocks.inc'
+      include 'mpif.h'
 c
 c arguments
 c
@@ -269,19 +270,31 @@ c
      & '  AGN Component Fractions :'/
      & ' ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::'/
      & '    Thermal Bump        (0 - 1, default 1) :',$)
-          read (*,*) xbump
+c          read (*,*) xbump
+      if (taskid.eq.0) read (*,*) xbump
+      call mpi_barrier(MPI_COMM_WORLD, taskerr)
+      call mpi_bcast(xbump,1,MPI_REAL8,0,MPI_COMM_WORLD,taskerr)    
+c
           write (*,*)
           if (xbump.lt.0.0d0) xbump=0.0d0
           if (xbump.gt.1.0d0) xbump=1.0d0
           write (*,20)
    20 format(  '   Intermediate Compton (0 - 1, default 1) :',$)
-          read (*,*) xinter
+c          read (*,*) xinter
+      if (taskid.eq.0) read (*,*) xinter
+      call mpi_barrier(MPI_COMM_WORLD, taskerr)
+      call mpi_bcast(xinter,1,MPI_REAL8,0,MPI_COMM_WORLD,taskerr)
+c      
           write (*,*)
           if (xinter.lt.0.0d0) xinter=0.0d0
           if (xinter.gt.1.0d0) xinter=1.0d0
           write (*,30)
    30 format(  '   High Energy Nonthermal (0 - 1, default 1) :',$)
-          read (*,*) xhigh
+c          read (*,*) xhigh
+      if (taskid.eq.0) read (*,*) xhigh
+      call mpi_barrier(MPI_COMM_WORLD, taskerr)
+      call mpi_bcast(xhigh,1,MPI_REAL8,0,MPI_COMM_WORLD,taskerr)   
+c      
           write (*,*)
           if (xhigh.lt.0.0d0) xhigh=0.0d0
           if (xhigh.gt.1.0d0) xhigh=1.0d0
@@ -326,19 +339,31 @@ c
      & '  AGN Component Fractions :'/
      & ' ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::'/
      & '   Thermal Bump         (0 - 1, default 1) :',$)
-          read (*,*) xbump
+c          read (*,*) xbump
+      if (taskid.eq.0) read (*,*) xbump
+      call mpi_barrier(MPI_COMM_WORLD, taskerr)
+      call mpi_bcast(xbump,1,MPI_REAL8,0,MPI_COMM_WORLD,taskerr)
+c          
           write (*,*)
           if (xbump.lt.0.0d0) xbump=0.0d0
           if (xbump.gt.1.0d0) xbump=1.0d0
           write (*,50)
    50 format(  '   Intermediate Compton (0 - 1, default 1) :',$)
-          read (*,*) xinter
+c          read (*,*) xinter
+      if (taskid.eq.0) read (*,*) xinter
+      call mpi_barrier(MPI_COMM_WORLD, taskerr)
+      call mpi_bcast(xinter,1,MPI_REAL8,0,MPI_COMM_WORLD,taskerr)
+c
           write (*,*)
           if (xinter.lt.0.0d0) xinter=0.0d0
           if (xinter.gt.1.0d0) xinter=1.0d0
           write (*,60)
    60 format(  '   High Energy Nonthermal (0 - 1, default 1) :',$)
-          read (*,*) xhigh
+c          read (*,*) xhigh
+      if (taskid.eq.0) read (*,*) xhigh
+      call mpi_barrier(MPI_COMM_WORLD, taskerr)
+      call mpi_bcast(xhigh,1,MPI_REAL8,0,MPI_COMM_WORLD,taskerr)
+c          
           write (*,*)
           if (xhigh.lt.0.0d0) xhigh=0.0d0
           if (xhigh.gt.1.0d0) xhigh=1.0d0
@@ -502,7 +527,9 @@ c
           write (*,100)
           write (*,110) (i,time(i),i=1,nmodels)
           write (*,120)
-          read (*,*) modelidx
+          if (taskid.eq.0) read (*,*) modelidx
+      call mpi_barrier(MPI_COMM_WORLD, taskerr)
+      call mpi_bcast(modelidx,1,MPI_INTEGER4,0,MPI_COMM_WORLD,taskerr)          
           write (*,*)
 c
           if (modelidx<1) modelidx=1
@@ -1538,6 +1565,7 @@ c  9 = CSPN Rauch TNMAP HNi/HCa grid lambda flambda
 c      two column atmosphere file
 c
       include 'cblocks.inc'
+      include 'mpif.h'
 c
 c arguments
 c
@@ -1940,6 +1968,7 @@ c if magnitude of alpha is too great
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 c
       include 'cblocks.inc'
+      include 'mpif.h'
 c
       integer*4 nfluxes
       real*8 eev(nfluxes),hnu(nfluxes)
